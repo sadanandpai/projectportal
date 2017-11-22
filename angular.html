@@ -14,7 +14,7 @@
 <script>
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope, $http) {
-	$http.get("http://127.0.0.1:8000/portal/students/").then(function(response) {
+	$http.get("https://projectportal2017.herokuapp.com/portal/students/").then(function(response) {
 		$scope.students = response.data;
 	});
 });
