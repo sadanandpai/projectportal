@@ -13,3 +13,4 @@ requests==2.9.1
 requests-oauthlib==0.8.0
 six==1.10.0
 virtualenv==15.1.0
+whitenoise==2.0.6
