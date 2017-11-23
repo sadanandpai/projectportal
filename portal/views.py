@@ -29,4 +29,4 @@ def guides(request):
 
 
 def projectguide(request):
-    return HttpResponse(serializers.serialize("json", ProjectGuide.objects.all().project_set.all()))
+    return HttpResponse(serializers.serialize("json", ProjectGuide.objects.all()))
