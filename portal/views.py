@@ -29,4 +29,4 @@ def guides(request):
 
 
 def projectguide(request):
-    return HttpResponse(serializers.serialize("json", ProjectGuide.objects.raw('SELECT * FROM portal_projectguide join portal_project on portal_projectguide.project_id = portal_project.id')))
+    return HttpResponse(serializers.serialize("json", ProjectGuide.objects.raw('SELECT * FROM portal_projectguide FULL OUTER JOIN portal_project on portal_projectguide.project_id = portal_project.id')))
