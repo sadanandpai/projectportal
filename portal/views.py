@@ -19,6 +19,14 @@ def index(request):
 def students(request):
     return HttpResponse(serializers.serialize("json", Student.objects.all()))
 
-@login_required
+
 def projects(request):
     return HttpResponse(serializers.serialize("json", Project.objects.all()))
+
+
+def guides(request):
+    return HttpResponse(serializers.serialize("json", Guide.objects.all()))
+
+
+def projectguide(request):
+    return HttpResponse(serializers.serialize("json", ProjectGuide.objects.all()))
