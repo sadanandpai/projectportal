@@ -18,7 +18,6 @@ def index(request):
 def students(request):
     return HttpResponse(serializers.serialize("json", Student.objects.all()))
 
-
+@login_required
 def projects(request):
-    return render(request, 'index.html')
-
+    return HttpResponse(serializers.serialize("json", Project.objects.all()))
