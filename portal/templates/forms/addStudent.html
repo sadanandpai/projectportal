@@ -109,7 +109,6 @@
 			    $http.get("/portal/students/delete/"+pk).then(function(response) {
 			        $scope.deleteinfo = response.data;
 			        if($scope.deleteinfo=="OK"){
-			        	alert("Saddy")
 			        	$scope.refresh();
 			        }
 			    });
@@ -128,10 +127,10 @@
 
 			    }).then(function mySuccess(response) {
 			        $scope.myWelcome = response.data;
-			        //alert(response.data);
+				    if(response.data == "Ok")
+					$scope.edited= 0;
 			    }, function myError(response) {
-			        $scope.myWelcome = response.statusText;
-			        //alert(response.data);
+			        alert(response.statusText);
 			    });
 			}
 
