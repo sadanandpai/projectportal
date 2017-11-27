@@ -123,6 +123,12 @@
             }
 
             $scope.updatevalue = function(student){
+		    if(student.fields.first_name == $('#first_name').val() && student.fields.last_name == $('#last_name').val() && student.fields.branch == $('#branch').val() && student.fields.year == $('#year').val()){
+					$scope.edited= 0;
+					Materialize.toast('No data is updated', 4000);
+					return;
+				}
+		    
 			    $http({
 			        method : "POST",
 			        headers: {
