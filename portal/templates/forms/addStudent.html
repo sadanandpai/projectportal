@@ -8,10 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <script src="sweetalert.min.js"></script>
 </head>
 
 <body ng-app="myApp" ng-controller="myCtrl" ng-init="edited = 0">
@@ -132,7 +129,7 @@
 			        headers: {
 						'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
 					},
-			  		data: {'pk': student.pk, 'stud_id': $('#stud_id').val(), 'first_name': $('#first_name').val(), 'last_name': $('#last_name').val(), 'branch': $('#branch').val(), 'year': $('#year').val()},
+			  		data: {'pk': student.pk, 'first_name': $('#first_name').val(), 'last_name': $('#last_name').val(), 'branch': $('#branch').val(), 'year': $('#year').val()},
 			        url : "/portal/students/update/"
 
 			    }).then(function mySuccess(response) {
