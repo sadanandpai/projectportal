@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-	
+    <script src="sweetalert.min.js"></script>
 </head>
 
 <body ng-app="myApp" ng-controller="myCtrl" ng-init="edited = 0">
@@ -56,7 +56,8 @@
 					
 					<td ng-if="edited == student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="edit(0)">cancel</i></a></td>
 					
-<td ng-if="edited != student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(student.pk)">delete</i></a></td>
+                                        <td ng-if="edited != student.pk"><i class="material-icons" ng-click="delete(student.pk)"><a class="btn-floating btn-small waves-effect waves-light red" ng-click="delete(student.pk)" onclick="swal(&apos;Oops&apos;, &apos;Press OK to delete!!!&apos;, &apos;error&apos;)">delete
+                                        </a></i></td>
 				</tr>
 				{% endverbatim %}
 			</tbody>
