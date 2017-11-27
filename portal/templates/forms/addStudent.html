@@ -57,7 +57,7 @@
 			</tbody>
 		</table>
 
-		<div class="row">
+		<div ng-if="add" class="row">
             <div class="col s12">
 				<form class="col s12 m12" method="POST" action="/portal/students/add/" accept-charset="UTF-8">
 					{% csrf_token %}
@@ -95,55 +95,69 @@
 	</div>
 
 	<script type="text/javascript">
-		var app = angular.module('myApp', []);
-		app.controller('myCtrl', function($scope, $http) {
+	var app = angular.module('myApp', []);
+	app.controller('myCtrl', function($scope, $http) {
 
-			$scope.edit= function(pk){
-            	$scope.edited= pk;
-            }
+		$scope.sort = "fields.stud_id";
+		$scope.reverse = false;
+		$scope.add = false;
+
+		$scope.edit= function(pk){
+			$scope.edited= pk;
+		    }
 
 
  			
-			$scope.delete= function(pk){
-			    $http.get("/portal/students/delete/"+pk).then(function(response) {
-			        $scope.deleteinfo = response.data;
-			        if($scope.deleteinfo=="OK"){
-			        	$scope.refresh();
-			        }
-			    });
-            }
+		$scope.delete= function(pk){
+		    $http.get("/portal/students/delete/"+pk).then(function(response) {
+			$scope.deleteinfo = response.data;
+			if($scope.deleteinfo=="OK"){
+				$scope.refresh();
+			}
+		    });
+            	}
 
             $scope.updatevalue = function(student){
-		    Materialize.toast('Student details of ' + student.fields.stud_id +  ' is updated', 4000);
-			    $http({
-			        method : "POST",
-			        headers: {
-						'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
-					},
-			  		data: {'pk': student.pk, 'stud_id': $('#stud_id').val(), 'first_name': $('#first_name').val(), 'last_name': $('#last_name').val(), 'branch': $('#branch').val(), 'year': $('#year').val()},
+	    Materialize.toast('Student details of ' + student.fields.stud_id +  ' is updated', 4000);
+		    $http({
+			method : "POST",
+			headers: {
+					'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
+				},
+				data: {'pk': student.pk, 'stud_id': $('#stud_id').val(), 'first_name': $('#first_name').val(), 'last_name': $('#last_name').val(), 'branch': $('#branch').val(), 'year': $('#year').val()},
 
-			        url : "/portal/students/update/"
+			url : "/portal/students/update/"
 
-			    }).then(function mySuccess(response) {
-				    if(response.data == "Ok"){
-					$scope.edited= 0;
-					$scope.refresh();
-				    }
-			    }, function myError(response) {
-			        alert(response.statusText);
+		    }).then(function mySuccess(response) {
+			    if(response.data == "Ok"){
 				$scope.edited= 0;
-			    });
-			}
+				$scope.refresh();
+			    }
+		    }, function myError(response) {
+			alert(response.statusText);
+			$scope.edited= 0;
+		    });
+		}
 
 
 
-            $scope.refresh= function(){
-			    $http.get("/portal/students/get/").then(function(response) {
-			        $scope.students = response.data;
-			    });
-			}
+		$scope.refresh= function(){
+		    $http.get("/portal/students/get/").then(function(response) {
+			$scope.students = response.data;
+		    });
+		}
+		
+	    	$scope.orderByMe = function(order) {
+			$scope.sort = order;
+			$scope.reverse = !$scope.reverse;
+		}
 
-			$scope.refresh();
+		$scope.addStud = function(){
+			$scope.add = !$scope.add;
+		}
+
+	    
+		$scope.refresh();
 		});
      
 	</script>
