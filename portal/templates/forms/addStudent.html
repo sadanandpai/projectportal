@@ -54,8 +54,7 @@
 					<td ng-if="edited == student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="updatevalue(student)">update</i></a></td>
 					
 					<td ng-if="edited == student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="edit(0)">cancel</i></a></td>
-					
-                                        <td ng-if="edited != student.pk"><i class="material-icons" ng-click="delete(student.pk)"><a class="btn-floating btn-small waves-effect waves-light red" ng-click="delete(student.pk)" onclick="swal(&apos;Oops&apos;, &apos;Press OK to delete!!!&apos;, &apos;error&apos;)">delete
+					<td ng-if="edited != student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(student.pk)">delete</i></a></td>
                                         </a></i></td>
 				</tr>
 				{% endverbatim %}
