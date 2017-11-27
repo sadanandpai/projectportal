@@ -55,7 +55,7 @@
 					<td ng-if="edited == student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="updatevalue(student)">update</i></a></td>
 					
 					<td ng-if="edited == student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="edit(0)">cancel</i></a></td>
-					<td ng-if="edited != student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(student.pk)">delete</i></a></td>
+					<td ng-if="edited != student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(student.pk, student.fields.stud_id)">delete</i></a></td>
                                         </a></i></td>
 				</tr>
 				{% endverbatim %}
@@ -113,15 +113,23 @@
 
 
  			
-			$scope.delete= function(pk){
-			    $http.get("/portal/students/delete/"+pk).then(function(response) {
+		 	// new changes		
+			$scope.delete= function(pk, stud_id){
+				var message= confirm('Are you sure you want to save this thing into the database?');
+			   if (message) {
+					
+					 $http.get("/portal/students/delete/"+pk).then(function(response) {
 			        $scope.deleteinfo = response.data;
 			        if($scope.deleteinfo=="OK"){
-			        	$scope.refresh();
+					Materialize.toast('Deleted the student with ID: '+stud_id, 4000);
+						$scope.refresh();
 			        }
 			    });
+				} else {
+					Materialize.toast('Changed mind', 4000);
+				}
+			   
             }
-
             $scope.updatevalue = function(student){
 		    if(student.fields.first_name == $('#first_name').val() && student.fields.last_name == $('#last_name').val() && student.fields.branch == $('#branch').val() && student.fields.year == $('#year').val()){
 					$scope.edited= 0;
