@@ -43,7 +43,6 @@
 
 					<td><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(student.pk)">delete</i></a></td>
 				</tr>
-				{{myWelcome}}
 				{% endverbatim %}
 			</tbody>
 		</table>
@@ -120,13 +119,11 @@
 			        headers: {
 						'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
 					},
-			        //data: {pk: "4", stud_id: "4NM08EC107", first_name: "Sachin", last_name: "Moodu", branch: "ECE", year: "2012"},
 			  		data: {'pk': student.pk, 'stud_id': $('#stud_id').val(), 'first_name': $('#first_name').val(), 'last_name': $('#last_name').val(), 'branch': $('#branch').val(), 'year': $('#year').val()},
 
 			        url : "/portal/students/update/"
 
 			    }).then(function mySuccess(response) {
-			        $scope.myWelcome = response.data;
 				    if(response.data == "Ok")
 					$scope.edited= 0;
 			    }, function myError(response) {
