@@ -121,6 +121,7 @@
             }
 
             $scope.updatevalue = function(student){
+		    alert(jQuery("[name=csrfmiddlewaretoken]").val());
 			    $http({
 			        method : "POST",
 			        headers: {
