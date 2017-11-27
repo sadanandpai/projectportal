@@ -36,6 +36,7 @@
 				</tr>
 			</thead>
 			<tbody>
+				{% csrf_token %}
 				{% verbatim %}
 				<tr ng-repeat="student in students | orderBy:sort:reverse | filter: tableValue">
 					<td ng-if="edited == student.pk">{{student.fields.stud_id}}</td>
