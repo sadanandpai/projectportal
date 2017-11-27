@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl" ng-init="edited = 0">
+	<div class="container">
+		<table class="bordered">
+			<thead>
+				<tr>
+					<th>Student Id</th>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Branch</th>
+					<th>Year</th>
+					<th><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons">add</i></a></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% verbatim %}
+				<tr ng-repeat="student in students">
+					<td ng-if="edited == student.pk"><input id="stud_id" type="text" value={{student.fields.stud_id}} /></td>
+					<td ng-if="edited == student.pk"><input id="first_name" type="text" value={{student.fields.first_name}} /></td>
+					<td ng-if="edited == student.pk"><input id="last_name" type="text" value={{student.fields.last_name}} /></td>
+					<td ng-if="edited == student.pk"><input id="branch" type="text" value={{student.fields.branch}} /></td>
+					<td ng-if="edited == student.pk"><input id="year" type="text" value={{student.fields.year}} /></td>	
+
+					<td ng-if="edited != student.pk">{{student.fields.stud_id}}</td>
+					<td ng-if="edited != student.pk">{{student.fields.first_name}}</td>
+					<td ng-if="edited != student.pk">{{student.fields.last_name}}</td>
+					<td ng-if="edited != student.pk">{{student.fields.branch}}</td>
+					<td ng-if="edited != student.pk">{{student.fields.year}}</td>
+
+					<td ng-if="edited != student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="edit(student.pk)">create</i></a></td>
+					<td ng-if="edited == student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="updatevalue(student)">update</i></a></td>
+
+					<td><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(student.pk)">delete</i></a></td>
+				</tr>
+				{{myWelcome}}
+				{% endverbatim %}
+			</tbody>
+		</table>
+
+		<div class="row">
+            <div class="col s12">
+				<form class="col s12 m12" method="POST" action="/portal/students/add/" accept-charset="UTF-8">
+					{% csrf_token %}
+					<div class="input-field col s12 m4 offset-m4 offset-l4">
+						<input id="stud_id" type="text" name="stud_id" required="yes" maxlength="10" title="Alphanumerics, only with 10 characters">
+						<label for="stud_id">Student ID</label><br>
+					</div>
+
+					<div class="input-field col s12 m4 offset-m4 offset-l4">
+						<input id="first_name" type="text" name="first_name" required="yes" maxlength="20" title="First Name">
+						<label for="first_name">First Name</label><br>
+					</div>
+
+					<div class="input-field col s12 m4 offset-m4 offset-l4">
+						<input id="last_name" type="text" name="last_name" required="yes" maxlength="20" title="Last_name">
+						<label for="last_name">Last Name</label><br>
+					</div>
+					<div class="input-field col s12 m4 offset-m4 offset-l4">
+						<input id="branch" type="text" name="branch" required="yes" maxlength="3" title="3 letter branch name">
+						<label for="last_name">Branch</label><br>
+					</div>
+
+					<div class="input-field col s12 m4 offset-m4 offset-l4">
+						<input id="year" type="text" name="year" required="yes" maxlength="4" title="Joining year">
+						<label for="last_name">Year</label>
+					</div>
+					<div class="row">
+		             	<div class="input-field col s12 center">
+		                	<input type="submit" class="waves-effect waves-light btn blue" value="Add student">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<form class="col m6" method="POST" action="/portal/students/update/" accept-charset="UTF-8">
+			{% csrf_token %}
+			Student Id: <input id="icon_prefix" type="text" name="stud_id" required="yes" maxlength="10" title="Alphanumerics, only with 10 characters"><br>
+		    first_name: <input id="icon_prefix" type="text" name="first_name" required="yes" maxlength="20" title="First_name"><br>
+		    last_name: <input id="icon_prefix" type="text" name="last_name" required="yes" maxlength="20" title="Last_name"><br>
+		    branch: <input id="icon_prefix" type="text" name="branch" required="yes" maxlength="3" title="3 letter branch name"><br>
+		    year: <input id="icon_prefix" type="text" name="year" required="yes" maxlength="4" title="Joining year"><br>
+		    <input type="submit" value="Add student">
+		</form>
+	</div>
+
+	<script type="text/javascript">
+		var app = angular.module('myApp', []);
+		app.controller('myCtrl', function($scope, $http) {
+
+			$scope.edit= function(pk){
+            	$scope.edited= pk;
+            }
+
+
+ 			
+			$scope.delete= function(pk){
+			    $http.get("/portal/students/delete/"+pk).then(function(response) {
+			        $scope.deleteinfo = response.data;
+			        if($scope.deleteinfo=="OK"){
+			        	alert("Saddy")
+			        	$scope.refresh();
+			        }
+			    });
+            }
+
+            $scope.updatevalue = function(student){
+			    $http({
+			        method : "POST",
+			        headers: {
+						'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
+					},
+			        //data: {pk: "4", stud_id: "4NM08EC107", first_name: "Sachin", last_name: "Moodu", branch: "ECE", year: "2012"},
+			  		data: {'pk': student.pk, 'stud_id': $('#stud_id').val(), 'first_name': $('#first_name').val(), 'last_name': $('#last_name').val(), 'branch': $('#branch').val(), 'year': $('#year').val()},
+
+			        url : "/portal/students/update/"
+
+			    }).then(function mySuccess(response) {
+			        $scope.myWelcome = response.data;
+			        //alert(response.data);
+			    }, function myError(response) {
+			        $scope.myWelcome = response.statusText;
+			        //alert(response.data);
+			    });
+			}
+
+
+
+            $scope.refresh= function(){
+			    $http.get("/portal/students/get/").then(function(response) {
+			        $scope.students = response.data;
+			    });
+			}
+
+			$scope.refresh();
+		});
+     
+	</script>
+</body>
+</html>
