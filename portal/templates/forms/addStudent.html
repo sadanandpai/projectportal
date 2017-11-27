@@ -123,7 +123,6 @@
             }
 
             $scope.updatevalue = function(student){
-		    alert(jQuery("[name=csrfmiddlewaretoken]").val());
 			    $http({
 			        method : "POST",
 			        headers: {
@@ -136,6 +135,7 @@
 				    if(response.data == "Ok"){
 						$scope.edited= 0;
 						$scope.refresh();
+					    	Materialize.toast('Student details of ' + student.fields.stud_id +  ' has been updated', 4000);
 				    }
 			    }, function myError(response) {
 			        alert(response.statusText);
