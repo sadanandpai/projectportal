@@ -82,16 +82,6 @@
 				</form>
 			</div>
 		</div>
-
-		<form class="col m6" method="POST" action="/portal/students/update/" accept-charset="UTF-8">
-			{% csrf_token %}
-			Student Id: <input id="icon_prefix" type="text" name="stud_id" required="yes" maxlength="10" title="Alphanumerics, only with 10 characters"><br>
-		    first_name: <input id="icon_prefix" type="text" name="first_name" required="yes" maxlength="20" title="First_name"><br>
-		    last_name: <input id="icon_prefix" type="text" name="last_name" required="yes" maxlength="20" title="Last_name"><br>
-		    branch: <input id="icon_prefix" type="text" name="branch" required="yes" maxlength="3" title="3 letter branch name"><br>
-		    year: <input id="icon_prefix" type="text" name="year" required="yes" maxlength="4" title="Joining year"><br>
-		    <input type="submit" value="Add student">
-		</form>
 	</div>
 
 	<script type="text/javascript">
@@ -124,10 +114,13 @@
 			        url : "/portal/students/update/"
 
 			    }).then(function mySuccess(response) {
-				    if(response.data == "Ok")
+				    if(response.data == "Ok"){
 					$scope.edited= 0;
+					$scope.refresh();
+				    }
 			    }, function myError(response) {
 			        alert(response.statusText);
+				$scope.edited= 0;
 			    });
 			}
 
