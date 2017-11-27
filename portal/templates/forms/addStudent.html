@@ -26,7 +26,7 @@
 			<tbody>
 				{% verbatim %}
 				<tr ng-repeat="student in students">
-					<td ng-if="edited == student.pk"><input id="stud_id" type="text" value={{student.fields.stud_id}} /></td>
+					<td ng-if="edited == student.pk">{{student.fields.stud_id}}</td>
 					<td ng-if="edited == student.pk"><input id="first_name" type="text" value={{student.fields.first_name}} /></td>
 					<td ng-if="edited == student.pk"><input id="last_name" type="text" value={{student.fields.last_name}} /></td>
 					<td ng-if="edited == student.pk"><input id="branch" type="text" value={{student.fields.branch}} /></td>
@@ -40,8 +40,9 @@
 
 					<td ng-if="edited != student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="edit(student.pk)">create</i></a></td>
 					<td ng-if="edited == student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="updatevalue(student)">update</i></a></td>
-
-					<td><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(student.pk)">delete</i></a></td>
+					
+					<td ng-if="edited == student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="edit(0)">cancel</i></a></td>
+					<td ng-if="edited != student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(student.pk)">delete</i></a></td>
 				</tr>
 				{% endverbatim %}
 			</tbody>
