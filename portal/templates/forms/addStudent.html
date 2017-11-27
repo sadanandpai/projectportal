@@ -36,6 +36,7 @@
 				</tr>
 			</thead>
 			<tbody>
+				{% verbatim %}
 				<tr ng-repeat="student in students | orderBy:sort:reverse | filter: tableValue">
 					<td ng-if="edited == student.pk">{{student.fields.stud_id}}</td>
 					<td ng-if="edited == student.pk"><div class="input-field"><input id="first_name" type="text" value={{student.fields.first_name}} /></div></td>
@@ -55,7 +56,7 @@
 					<td ng-if="edited == student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="edit(0)">cancel</i></a></td>
 					<td ng-if="edited != student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(student.pk)">delete</i></a></td>
 				</tr>
-				
+				{% endverbatim %}
 			</tbody>
 		</table>
 
