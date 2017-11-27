@@ -13,25 +13,35 @@
 
 <body ng-app="myApp" ng-controller="myCtrl" ng-init="edited = 0">
 	<div class="container">
+		
+		<div class="row">
+			<div class="col s12">
+			  Search: 
+			  <div class="input-field inline">
+				<input id="tableValue" type="text" class="validate" ng-model="tableValue">
+				<label for="tableValue" data-error="wrong" data-success="right"></label>
+			  </div>
+			</div>
+		</div>
+		
 		<table class="bordered">
 			<thead>
 				<tr>
-					<th>Student Id</th>
-					<th>First Name</th>
-					<th>Last Name</th>
-					<th>Branch</th>
-					<th>Year</th>
-					<th><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons">add</i></a></th>
+					<th ng-click="orderByMe('fields.stud_id')">Student Id</th>
+					<th ng-click="orderByMe('fields.first_name')">First Name</th>
+					<th ng-click="orderByMe('fields.last_name')">Last Name</th>
+					<th ng-click="orderByMe('fields.branch')">Branch</th>
+					<th ng-click="orderByMe('fields.year')">Year</th>
+					<th><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="addStud()">add</i></a></th>
 				</tr>
 			</thead>
 			<tbody>
-				
-				<tr ng-repeat="student in students">
-					<td ng-if="edited == student.pk"><input id="stud_id" type="text" value={{student.fields.stud_id}} /></td>
-					<td ng-if="edited == student.pk"><input id="first_name" type="text" value={{student.fields.first_name}} /></td>
-					<td ng-if="edited == student.pk"><input id="last_name" type="text" value={{student.fields.last_name}} /></td>
-					<td ng-if="edited == student.pk"><input id="branch" type="text" value={{student.fields.branch}} /></td>
-					<td ng-if="edited == student.pk"><input id="year" type="text" value={{student.fields.year}} /></td>	
+				<tr ng-repeat="student in students | orderBy:sort:reverse | filter: tableValue">
+					<td ng-if="edited == student.pk">{{student.fields.stud_id}}</td>
+					<td ng-if="edited == student.pk"><div class="input-field"><input id="first_name" type="text" value={{student.fields.first_name}} /></div></td>
+					<td ng-if="edited == student.pk"><div class="input-field"><input id="last_name" type="text" value={{student.fields.last_name}} /></div></div></td>
+					<td ng-if="edited == student.pk"><div class="input-field"><input id="branch" type="text" value={{student.fields.branch}} /></div></td>
+					<td ng-if="edited == student.pk"><div class="input-field"><input id="year" type="text" value={{student.fields.year}} /></div></td>	
 
 					<td ng-if="edited != student.pk">{{student.fields.stud_id}}</td>
 					<td ng-if="edited != student.pk">{{student.fields.first_name}}</td>
@@ -41,17 +51,18 @@
 
 					<td ng-if="edited != student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="edit(student.pk)">create</i></a></td>
 					<td ng-if="edited == student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="updatevalue(student)">update</i></a></td>
-
-					<td><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(student.pk)">delete</i></a></td>
+					
+					<td ng-if="edited == student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="edit(0)">cancel</i></a></td>
+					<td ng-if="edited != student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(student.pk)">delete</i></a></td>
 				</tr>
 				
 			</tbody>
 		</table>
 
-		<div class="row">
+		<div ng-if="add" class="row">
             <div class="col s12">
 				<form class="col s12 m12" method="POST" action="/portal/students/add/" accept-charset="UTF-8">
-{% csrf_token %}
+					<input type='hidden' name='csrfmiddlewaretoken' value='FQbzlgBikxkNqU12PYCHhbaPTCp6hOkCg6DtAv3ERi0SqdHe91voOncB6zCi0EJ6' />
 					<div class="input-field col s12 m4 offset-m4 offset-l4">
 						<input id="stud_id" type="text" name="stud_id" required="yes" maxlength="10" title="Alphanumerics, only with 10 characters">
 						<label for="stud_id">Student ID</label><br>
@@ -88,7 +99,11 @@
 	<script type="text/javascript">
 		var app = angular.module('myApp', []);
 		app.controller('myCtrl', function($scope, $http) {
-
+			
+			$scope.sort = "fields.stud_id";
+			$scope.reverse = false;
+			$scope.add = false;
+			
 			$scope.edit= function(pk){
             	$scope.edited= pk;
             }
@@ -105,23 +120,23 @@
             }
 
             $scope.updatevalue = function(student){
+				Materialize.toast('Student details of ' + student.fields.stud_id +  ' has been updated', 4000);
 			    $http({
 			        method : "POST",
 			        headers: {
 						'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
 					},
 			  		data: {'pk': student.pk, 'stud_id': $('#stud_id').val(), 'first_name': $('#first_name').val(), 'last_name': $('#last_name').val(), 'branch': $('#branch').val(), 'year': $('#year').val()},
-
 			        url : "/portal/students/update/"
 
 			    }).then(function mySuccess(response) {
 				    if(response.data == "Ok"){
-					$scope.edited= 0;
-					$scope.refresh();
+						$scope.edited= 0;
+						$scope.refresh();
 				    }
 			    }, function myError(response) {
 			        alert(response.statusText);
-				$scope.edited= 0;
+					$scope.edited= 0;
 			    });
 			}
 
@@ -129,10 +144,19 @@
 
             $scope.refresh= function(){
 			    $http.get("/portal/students/get/").then(function(response) {
-			        $scope.students = response.data;
+			  		data: {'pk': student.pk, 'stud_id': $('#stud_id').val(), 'first_name': $('#first_name').val(), 'last_name': $('#last_name').val(), 'branch': $('#branch').val(), 'year': $('#year').val()},
 			    });
 			}
-
+			
+			$scope.orderByMe = function(order) {
+				$scope.sort = order;
+				$scope.reverse = !$scope.reverse;
+			}
+			
+			$scope.addStud = function(){
+				$scope.add = !$scope.add;
+			}
+			
 			$scope.refresh();
 		});
      
