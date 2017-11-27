@@ -144,7 +144,7 @@
 
             $scope.refresh= function(){
 			    $http.get("/portal/students/get/").then(function(response) {
-			  		data: {'pk': student.pk, 'stud_id': $('#stud_id').val(), 'first_name': $('#first_name').val(), 'last_name': $('#last_name').val(), 'branch': $('#branch').val(), 'year': $('#year').val()},
+			  		$scope.students = response.data;
 			    });
 			}
 			
