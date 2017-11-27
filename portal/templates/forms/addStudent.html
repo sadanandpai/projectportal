@@ -12,6 +12,15 @@
 
 <body ng-app="myApp" ng-controller="myCtrl" ng-init="edited = 0">
 	<div class="container">
+		<div class="row">
+			<div class="col s12">
+			  Search: 
+			  <div class="input-field inline">
+				<input id="tableValue" type="text" class="validate" ng-model="tableValue">
+				<label for="tableValue" data-error="wrong" data-success="right"></label>
+			  </div>
+			</div>
+		</div>
 		<table class="bordered">
 			<thead>
 				<tr>
@@ -25,7 +34,7 @@
 			</thead>
 			<tbody>
 				{% verbatim %}
-				<tr ng-repeat="student in students">
+				<tr ng-repeat="student in students | orderBy:'fields.stud_id' | filter: tableValue">
 					<td ng-if="edited == student.pk">{{student.fields.stud_id}}</td>
 					<td ng-if="edited == student.pk"><input id="first_name" type="text" value={{student.fields.first_name}} /></td>
 					<td ng-if="edited == student.pk"><input id="last_name" type="text" value={{student.fields.last_name}} /></td>
