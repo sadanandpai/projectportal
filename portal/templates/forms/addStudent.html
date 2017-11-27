@@ -62,7 +62,7 @@
 		<div ng-if="add" class="row">
             <div class="col s12">
 				<form class="col s12 m12" method="POST" action="/portal/students/add/" accept-charset="UTF-8">
-					<input type='hidden' name='csrfmiddlewaretoken' value='FQbzlgBikxkNqU12PYCHhbaPTCp6hOkCg6DtAv3ERi0SqdHe91voOncB6zCi0EJ6' />
+					{% csrf_token %}
 					<div class="input-field col s12 m4 offset-m4 offset-l4">
 						<input id="stud_id" type="text" name="stud_id" required="yes" maxlength="10" title="Alphanumerics, only with 10 characters">
 						<label for="stud_id">Student ID</label><br>
