@@ -85,13 +85,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         #'NAME': 'lupin',
-        'NAME': 'd505k1q2u9noce',
+        'NAME': 'd83v41m7uh23oe',
         #'USER': 'postgres',
-        'USER': 'dnwsxzacqnnjgb',
+        'USER': 'yvjguwadkqzbsy',
         #'PASSWORD': '123456',
-        'PASSWORD': '746ba0100c342383cd015d4dbc55161283b9f65638738829a9ea563050e8a243',
+        'PASSWORD': 'dae6377fa2867c34b31d32a53a788149767c828ea6772ccb68c214fca5151c10',
         #'HOST': '127.0.0.1',
-        'HOST': 'ec2-54-221-246-84.compute-1.amazonaws.com',
+        'HOST': 'ec2-54-235-254-251.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
