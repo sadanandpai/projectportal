@@ -59,7 +59,7 @@ def students(request):
     return HttpResponse(serializers.serialize("json", UserInfo.objects.filter(user__username = 'guide')))
 
 
-@login_required
+
 def addStudents(request):
 	if request.method == 'POST':
 		form = StudentForm(request.POST)
