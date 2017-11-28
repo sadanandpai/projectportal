@@ -15,12 +15,16 @@
 	<div class="container">
 		
 		<div class="row">
-			<div class="col s12">
+			<div class="col s8">
 			  Search: 
 			  <div class="input-field inline">
 				<input id="tableValue" type="text" class="validate" ng-model="tableValue">
 				<label for="tableValue" data-error="wrong" data-success="right"></label>
 			  </div>
+			</div>
+
+			<div class="col s4 right-align input-field inline">
+				<a class="waves-effect waves-light btn" href="/portal/signout/">Logout</a>
 			</div>
 		</div>
 		
@@ -64,7 +68,7 @@
 
 		<div ng-if="add" class="row">
             <div class="col s12">
-				<form class="col s12 m12" method="POST" action="/portal/students/add/" accept-charset="UTF-8">
+				<form class="col s12 m12" method="POST" action="/portal/guide/students/add/" accept-charset="UTF-8">
 					{% csrf_token %}
 					<div class="input-field col s12 m4 offset-m4 offset-l4">
 						<input id="stud_id" type="text" name="stud_id" required="yes" maxlength="10" title="Alphanumerics, only with 10 characters">
@@ -118,7 +122,7 @@
 				var message= confirm('Are you sure you want to save this thing into the database?');
 			   if (message) {
 					
-					 $http.get("/portal/students/delete/"+pk).then(function(response) {
+					 $http.get("/portal/guide/students/delete/"+pk).then(function(response) {
 			        $scope.deleteinfo = response.data;
 			        if($scope.deleteinfo=="OK"){
 					Materialize.toast('Deleted the student with ID: '+stud_id, 4000);
@@ -143,7 +147,7 @@
 						'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
 					},
 			  		data: {'pk': student.pk, 'first_name': $('#first_name').val(), 'last_name': $('#last_name').val(), 'branch': $('#branch').val(), 'year': $('#year').val()},
-			        url : "/portal/students/update/"
+			        url : "/portal/guide/students/update/"
 
 			    }).then(function mySuccess(response) {
 				    if(response.data == "Ok"){
@@ -160,7 +164,7 @@
 
 
             $scope.refresh= function(){
-			    $http.get("/portal/students/get/").then(function(response) {
+			    $http.get("/portal/guide/students/").then(function(response) {
 			  		$scope.students = response.data;
 			    });
 			}

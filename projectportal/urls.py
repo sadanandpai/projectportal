@@ -19,6 +19,7 @@ from portal import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^accounts/login/', views.index),
     url(r'^portal/', include('portal.urls')),
     url(r'^admin/', admin.site.urls),
 ]

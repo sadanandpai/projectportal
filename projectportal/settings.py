@@ -84,6 +84,7 @@ WSGI_APPLICATION = 'projectportal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+        #'NAME': 'lupin',
         'NAME': 'd889g544jgekgs',
         #'USER': 'postgres',
         'USER': 'chnanzoywehtdu',
