@@ -56,7 +56,7 @@ def studentsPage(request):
 
 @login_required
 def students(request):
-    return HttpResponse(serializers.serialize("json", UserInfo.objects.filter()))
+    return HttpResponse(serializers.serialize("json", UserInfo.objects.filter(usertype = 's')))
 
 
 @login_required
