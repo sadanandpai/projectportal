@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 
         <link rel="manifest" href="manifest.json">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -28,9 +28,7 @@
                     closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
                     draggable: false // Choose whether you can drag to open on touch screens
                 });
-                $(document).ready(function(){
-                    $('.modal').modal();
-                  });
+                $('.modal').modal();
                 });
         </script>
         <style>
@@ -44,7 +42,7 @@
         </style>
 </head>
 
-<body>
+<body ng-app="myApp" ng-controller="myCtrl">
 	
 	<nav class="light-blue lighten-1" role="navigation">
         <div class="nav-wrapper container">
@@ -141,7 +139,7 @@
 				<div class="col m2 right-align"><label class="active" for="password">Password</label></div>
 				<div class="col m2"><td class="right-align">**********</div>
 
-				<a class="waves-effect waves-light btn orange">Change Password</a>
+				<a data-target="modal1" class="waves-effect waves-light btn orange modal-trigger">Change Password</a>
 			</div>
 		</div>
 		
@@ -155,10 +153,76 @@
 				<div class="col s6"><td class="right-align">**********</div>
 			</div>
 			<div class="row center-align">
-				<a class="waves-effect waves-light btn orange">Change Password</a>
+				<a data-target="modal1" class="waves-effect waves-light btn orange modal-trigger">Change Password</a>
 			</div>
 		</div>
 	</div>
+
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal bottom-sheet">
+  	{% csrf_token %}
+    <div class="modal-content">
+    	<h4>Change Password</h4>
+          <div class="row">
+	        <div class="col s12 m12">
+	        	Old password: 
+	          <div class="input-field inline">
+	            <input id="oldpassword" type="password" class="validate">
+	            <label for="oldpassword" data-error="wrong" data-success="right">Old Password</label>
+	          </div>
+	        </div>
+	    </div>
+	    <div class="row">
+    	  <div class="col s12 m12">
+    	  	New Password: 
+			<div class="input-field inline">
+				<input id="password" type="password" class="validate">
+				<label for="password" data-error="wrong" data-success="right">New Password</label>
+			</div>
+			<div class="input-field inline">
+				<input id="confpassword" type="password" class="validate">
+				<label for="confpassword" data-error="wrong" data-success="right">Confirm Password</label>
+			</div>
+			<div class="input-field inline">
+				<a class="waves-effect waves-light btn orange" ng-click="updatePassword()">Update Password</a>
+			</div>
+		</div>
+	   </div>  
+    </div>
+  </div>
+
+
+
 	<script src="app.js" async></script>
+	<script type="text/javascript">
+			
+		var app = angular.module('myApp', []);
+		app.controller('myCtrl', function($scope, $http) {
+
+			$scope.updatePassword = function(){
+			    if($('#password').val() != $('#confpassword').val()){
+					Materialize.toast('New Password doesnt match with confirm password', 4000);
+					return;
+				}
+		    
+			    $http({
+			        method : "POST",
+			        headers: {
+						'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
+					},
+			  		data: {'oldpassword': $('#oldpassword').val(), 'password': $('#password').val()},
+			        url : "/portal/students/changePassword/"
+
+			    }).then(function mySuccess(response) {
+			    	Materialize.toast(response.data, 4000)
+				    
+			    }, function myError(response) {
+			        alert(response.statusText);
+			    });
+			}
+		});
+
+
+	</script>
 </body>
 </html>

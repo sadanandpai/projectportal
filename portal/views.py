@@ -15,15 +15,18 @@ from .models import UserInfo
 
 from .forms import StudentForm
 from .forms import SigninForm
+from django.core.mail import send_mail
 
 
 def index(request):
-    return render(request, 'forms/signin.html')
+	if request.user.is_authenticated:
+		return redirect('/portal/signin/')
+	return render(request, 'forms/signin.html')
 
 
 def signin(request):
 	if request.user.is_authenticated:
-		if user.userinfo.usertype == 'g':
+		if request.user.userinfo.usertype == 'g':
 			return redirect('/portal/guide/students/crud/')
 		elif user.userinfo.usertype == 's':
 			return redirect('/portal/students/')
@@ -88,11 +91,7 @@ def updateStudents(request):
 	if request.method == 'POST':
 		body = json.loads(request.body.decode('utf-8'))
 		user = User.objects.get(username = body['pk'])
-		user.first_name = body['first_name']
-		user.last_name = body['last_name']
-		user.userinfo.branch = body['branch']
-		user.userinfo.year = body['year']
-		user.save();
+
 		return HttpResponse("Ok")
 	return HttpResponse("Not OK")
 
@@ -102,12 +101,28 @@ def deleteStudents(request, pk):
 	user = User.objects.get(pk=pk)
 	user.delete()
 	return HttpResponse("OK")
+	#send_mail('Password reset','Project Portal details','keerthiniab@gmail.com',['sadypai@gmail.com'], fail_silently=False,)
 
 
 
 @login_required
 def studentsProfile(request):
     return render(request, 'studentProfile.html')
+
+
+@login_required
+def studentChangePassword(request):
+	if request.method == 'POST':
+		body = json.loads(request.body.decode('utf-8'))
+		if request.user.check_password(body['oldpassword']):
+			request.user.set_password(body['password'])
+			request.user.save()
+			return HttpResponse("Password changed successfully")
+		else:
+			return HttpResponse("Old password field is not right")
+	else:
+		return HttpResponse("Not a valid POST request")
+
 
 
 def projects(request):

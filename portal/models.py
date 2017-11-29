@@ -7,7 +7,7 @@ from django.conf import settings
 
 
 def natural_key(self):
-    return (self.username, self.first_name, self.last_name)
+    return ({'username': self.username, 'first_name': self.first_name, 'last_name': self.last_name})
 
 User.add_to_class("natural_key", natural_key)
 
