@@ -87,7 +87,7 @@ def addStudents(request):
 def updateStudents(request):
 	if request.method == 'POST':
 		body = json.loads(request.body.decode('utf-8'))
-		user = User.objects.get(pk=body['pk'])
+		user = User.objects.get(username = body['pk'])
 		user.first_name = body['first_name']
 		user.last_name = body['last_name']
 		user.userinfo.branch = body['branch']
