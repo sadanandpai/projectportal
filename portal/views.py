@@ -56,7 +56,7 @@ def studentsPage(request):
 
 @login_required
 def students(request):
-    return HttpResponse(serializers.serialize("json", UserInfo.objects.all().prefetch_related('user')))
+    return HttpResponse(serializers.serialize("json", UserInfo.objects.all(), use_natural_foreign_keys=True))
 
 
 @login_required
