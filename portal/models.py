@@ -5,6 +5,13 @@ from django.db.models.signals import post_save
 from django.core.cache import cache
 from django.conf import settings
 
+
+def natural_key(self):
+    return (self.first_name, self.last_name)
+
+User.add_to_class("natural_key", natural_key)
+
+
 class Project(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
