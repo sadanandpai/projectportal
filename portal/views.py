@@ -98,7 +98,7 @@ def updateStudents(request):
 
 @login_required
 def deleteStudents(request, username):
-	user = User.objects.get(id = username)
+	user = User.objects.get(username = username)
 	user.delete()
 	return HttpResponse("OK")
 	#send_mail('Password reset','Project Portal details','keerthiniab@gmail.com',['sadypai@gmail.com'], fail_silently=False,)
