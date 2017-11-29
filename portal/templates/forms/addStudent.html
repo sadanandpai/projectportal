@@ -121,7 +121,7 @@
 				var message= confirm('Are you sure you want to save this thing into the database?');
 			   if (message) {
 					
-					 $http.get("/portal/guide/students/delete/"+username).then(function(response) {
+					 $http.get("/portal/guide/students/delete/"+username+"/").then(function(response) {
 			        $scope.deleteinfo = response.data;
 			        if($scope.deleteinfo=="OK"){
 					Materialize.toast('Deleted the student with ID: '+ username, 4000);
