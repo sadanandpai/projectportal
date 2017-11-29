@@ -39,7 +39,7 @@ def signin(request):
 			if user is not None:
 				login(request, user)
 				if user.userinfo.usertype == 'g':
-					return redirect('/portal/guide/students/crud/')
+					return render(request, 'forms/addStudent.html', {"last_login" : user.last_login})
 				elif user.userinfo.usertype == 's':
 					return redirect('/portal/students/')
 	return render(request, 'forms/signin.html')
@@ -65,33 +65,35 @@ def students(request):
 @login_required
 def addStudents(request):
 	if request.method == 'POST':
-		form = StudentForm(request.POST)
-		if form.is_valid():
-			username = request.POST['stud_id']
-			first_name = request.POST['first_name']
-			last_name = request.POST['last_name']
-			email = 'username@email.com'
-			password = username
-			user = User.objects.create_user(username, email, password)
+		body = json.loads(request.body.decode('utf-8'))
+		username = body['username']
+		first_name = body['first_name']
+		last_name = body['last_name']
+		email = body['email']
+		password = username
+		user = User.objects.create_user(username, email, password)
 
-			user.first_name = first_name
-			user.last_name = last_name
-			user.userinfo.usertype = 's'
-			user.userinfo.branch = request.POST['branch']
-			user.userinfo.year = request.POST['year']
-			user.save()
-
-			return render(request, 'forms/addStudent.html')
+		user.first_name = first_name
+		user.last_name = last_name
+		user.userinfo.usertype = 's'
+		user.userinfo.branch = body['branch']
+		user.userinfo.year = body['year']
+		user.save()
+		return HttpResponse("Ok")
 	else:
-		return render(request, 'forms/addStudent.html')
+		return HttpResponse("Not Ok")
 
 
 @login_required
 def updateStudents(request):
 	if request.method == 'POST':
 		body = json.loads(request.body.decode('utf-8'))
-		user = User.objects.get(username = body['pk'])
-
+		user = User.objects.get(username = body['username'])
+		user.first_name = body['first_name']
+		user.last_name = body['last_name']
+		user.userinfo.branch = body['branch']
+		user.userinfo.year = body['year']
+		user.save()
 		return HttpResponse("Ok")
 	return HttpResponse("Not OK")
 
