@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^guide/students/add/$', views.addStudents),
     url(r'^guide/students/delete/(?P<username>[0-9]+)/$', views.deleteStudents),
     url(r'^guide/students/update/$', views.updateStudents),
+    url(r'^guide/students/(?P<username>[A-z0-9]+)/$', views.viewstudentsProfile),
 
     url('^', include('django.contrib.auth.urls')),
 ]

@@ -106,8 +106,12 @@ def deleteStudents(request, username):
 	#send_mail('Password reset','Project Portal details','keerthiniab@gmail.com',['sadypai@gmail.com'], fail_silently=False,)
 
 
-
 @login_required
+def viewstudentsProfile(request, username):
+    return render(request, 'studentProfile.html')
+
+
+
 def studentsProfile(request):
     return render(request, 'studentProfile.html')
 

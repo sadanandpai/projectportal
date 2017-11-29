@@ -66,13 +66,12 @@
 				{% csrf_token %}
 				{% verbatim %}
 				<tr ng-repeat="student in students | orderBy:sort:reverse | filter: tableValue">
-					<td ng-if="edited == student.fields.user.username">{{student.fields.user.username}}</td>
+					<td><a href="../{{student.fields.user.username}}/">{{student.fields.user.username}}</a></td>
 					<td ng-if="edited == student.fields.user.username"><div class="input-field"><input id="first_name" type="text" value={{student.fields.user.first_name}} /></div></td>
 					<td ng-if="edited == student.fields.user.username"><div class="input-field"><input id="last_name" type="text" value={{student.fields.user.last_name}} /></div></div></td>
 					<td ng-if="edited == student.fields.user.username"><div class="input-field"><input id="branch" type="text" value={{student.fields.branch}} /></div></td>
 					<td ng-if="edited == student.fields.user.username"><div class="input-field"><input id="year" type="text" value={{student.fields.year}} /></div></td>	
 
-					<td ng-if="edited != student.fields.user.username">{{student.fields.user.username}}</td>
 					<td ng-if="edited != student.fields.user.username">{{student.fields.user.first_name}}</td>
 					<td ng-if="edited != student.fields.user.username">{{student.fields.user.last_name}}</td>
 					<td ng-if="edited != student.fields.user.username">{{student.fields.branch}}</td>
