@@ -87,20 +87,20 @@ def addStudents(request):
 def updateStudents(request):
 	if request.method == 'POST':
 		body = json.loads(request.body.decode('utf-8'))
-		student = User.objects.get(pk=body['pk'])
-		student.first_name = body['first_name']
-		student.last_name = body['last_name']
-		student.branch = body['branch']
-		student.year = body['year']
-		student.save();
+		user = User.objects.get(pk=body['pk'])
+		user.first_name = body['first_name']
+		user.last_name = body['last_name']
+		user.userinfo.branch = body['branch']
+		user.userinfo.year = body['year']
+		user.save();
 		return HttpResponse("Ok")
 	return HttpResponse("Not OK")
 
 
 @login_required
 def deleteStudents(request, pk):
-	student = Student.objects.get(pk=pk)
-	student.delete()
+	user = User.objects.get(pk=pk)
+	user.delete()
 	return HttpResponse("OK")
 
 
