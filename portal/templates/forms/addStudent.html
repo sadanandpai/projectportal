@@ -44,14 +44,14 @@
 				{% verbatim %}
 				<tr ng-repeat="student in students | orderBy:sort:reverse | filter: tableValue">
 					<td ng-if="edited == student.pk">{{student.fields.user[0]}}</td>
-					<td ng-if="edited == student.pk"><div class="input-field"><input id="first_name" type="text" value={{student.fields.first_name}} /></div></td>
-					<td ng-if="edited == student.pk"><div class="input-field"><input id="last_name" type="text" value={{student.fields.last_name}} /></div></div></td>
+					<td ng-if="edited == student.pk"><div class="input-field"><input id="first_name" type="text" value={{student.fields.user[1]}} /></div></td>
+					<td ng-if="edited == student.pk"><div class="input-field"><input id="last_name" type="text" value={{student.fields.user[2]}} /></div></div></td>
 					<td ng-if="edited == student.pk"><div class="input-field"><input id="branch" type="text" value={{student.fields.branch}} /></div></td>
 					<td ng-if="edited == student.pk"><div class="input-field"><input id="year" type="text" value={{student.fields.year}} /></div></td>	
 
 					<td ng-if="edited != student.pk">{{student.fields.user[0]}}</td>
-					<td ng-if="edited != student.pk">{{student.fields.first_name}}</td>
-					<td ng-if="edited != student.pk">{{student.fields.last_name}}</td>
+					<td ng-if="edited != student.pk">{{student.fields.user[1]}}</td>
+					<td ng-if="edited != student.pk">{{student.fields.user[2]}}</td>
 					<td ng-if="edited != student.pk">{{student.fields.branch}}</td>
 					<td ng-if="edited != student.pk">{{student.fields.year}}</td>
 
