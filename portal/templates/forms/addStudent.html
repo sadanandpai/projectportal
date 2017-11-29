@@ -59,8 +59,7 @@
 					<td ng-if="edited == student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="updatevalue(student)">update</i></a></td>
 					
 					<td ng-if="edited == student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="edit(0)">cancel</i></a></td>
-					<td ng-if="edited != student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(student.pk, student.fields.stud_id)">delete</i></a></td>
-                                        </a></i></td>
+					<td ng-if="edited != student.pk"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(student.pk, student.fields.user.username)">delete</i></a></td>
 				</tr>
 				{% endverbatim %}
 			</tbody>
@@ -118,14 +117,14 @@
 
  			
 		 	// new changes		
-			$scope.delete= function(pk, stud_id){
+			$scope.delete= function(pk, username){
 				var message= confirm('Are you sure you want to save this thing into the database?');
 			   if (message) {
 					
-					 $http.get("/portal/guide/students/delete/"+pk).then(function(response) {
+					 $http.get("/portal/guide/students/delete/"+username).then(function(response) {
 			        $scope.deleteinfo = response.data;
 			        if($scope.deleteinfo=="OK"){
-					Materialize.toast('Deleted the student with ID: '+stud_id, 4000);
+					Materialize.toast('Deleted the student with ID: '+ username, 4000);
 						$scope.refresh();
 			        }
 			    });
