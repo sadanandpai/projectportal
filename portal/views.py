@@ -73,7 +73,7 @@ def addStudents(request):
 
 			user.first_name = first_name
 			user.last_name = last_name
-			user.userinfo.usertype = 'g'
+			user.userinfo.usertype = 's'
 			user.userinfo.branch = request.POST['branch']
 			user.userinfo.year = request.POST['year']
 			user.save()
