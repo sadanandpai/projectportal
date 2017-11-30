@@ -116,6 +116,10 @@ def studentsProfile(request):
     return render(request, 'studentProfile.html')
 
 
+def students(request, username):
+    return HttpResponse(serializers.serialize("json", UserInfo.objects.filter(user__username = username), use_natural_foreign_keys=True))
+
+
 @login_required
 def studentChangePassword(request):
 	if request.method == 'POST':
