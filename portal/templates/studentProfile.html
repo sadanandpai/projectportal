@@ -69,10 +69,10 @@
 				<br><br>
 				<div class="row">
 					<div class="col m6 s24">
-						<label class="active" for="first_name">First Name: </label>{{ student.fields.first_name }}
+						<label class="active" for="first_name">First Name: </label>{{ student.fields.user.first_name }}
 					</div>
 					<div class="col m6">
-						<label class="active" for="last_name">Last Name: </label>{{ student.fields.last_name }}
+						<label class="active" for="last_name">Last Name: </label>{{ student.fields.user.last_name }}
 					</div>
 				</div>
 				<div class="row">
@@ -103,11 +103,11 @@
 				<br><br>
 				<div class="row">
 					<div class="col s6 right-align"><label class="active" for="first_name">First Name: </label></div>
-					<div class="col s6">{{ student.fields.user.username }}</div>
+					<div class="col s6">{{ student.fields.user.first_name }}</div>
 				</div>
 				<div class="row">
 					<div class="col s6 right-align"><label class="active" for="last_name">Last Name: </label></div>
-					<div class="col s6">{{ student.fields.first_name }}</div>
+					<div class="col s6">{{ student.fields.last_name }}</div>
 				</div>
 				<div class="row">
 					<div class="col s6 right-align"><label class="active" for="dob">Date of birth: </label></div>
@@ -115,7 +115,7 @@
 				</div>
 				<div class="row">
 					<div class="col s6 right-align"><label class="active" for="yoj">Year of Joining: </label></div>
-					<div class="col s6">{{ student.fields.last_name }}</div>
+					<div class="col s6">{{ student.fields.year }}</div>
 				</div>
 				<div class="row">
 					<div class="col s6 right-align"><label class="active" for="branch">Branch: </label></div>
@@ -123,7 +123,7 @@
 				</div>
 				<div class="row">
 					<div class="col s6 right-align"><label class="active" for="stud_id">Student Id: </label></div>
-					<div class="col s6">{{ student.fields.year }}</div>
+					<div class="col s6">{{ student.fields.user.username }}</div>
 				</div>
 			</div>
 		</div>
