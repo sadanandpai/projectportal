@@ -62,7 +62,7 @@ def students(request, username = False):
     if username == False:
     	return HttpResponse(serializers.serialize("json", UserInfo.objects.filter(usertype = 's'), use_natural_foreign_keys=True))
     else:
-    	return HttpResponse(serializers.serialize("json", UserInfo.objects.get(user__username = username), use_natural_foreign_keys=True))
+    	return HttpResponse(serializers.serialize("json", UserInfo.objects.filter(user__username = username), use_natural_foreign_keys=True))
 
     
 
