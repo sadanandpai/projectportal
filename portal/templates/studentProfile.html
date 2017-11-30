@@ -69,32 +69,32 @@
 				<br><br>
 				<div class="row">
 					<div class="col m6 s24">
-						<label class="active" for="first_name">First Name: </label>Sadanand
+						<label class="active" for="first_name">First Name: </label>{{ student.fields.first_name }}
 					</div>
 					<div class="col m6">
-						<label class="active" for="last_name">Last Name: </label>Pai
+						<label class="active" for="last_name">Last Name: </label>{{ student.fields.last_name }}
 					</div>
 				</div>
 				<div class="row">
 					<div class="col m6">
-						<label class="active" for="dob">Date of birth: </label>25 May 1991
+						<label class="active" for="dob">Date of birth: </label>DD/MM/YYYY
 					</div>
 					<div class="col m6">	
-						<label class="active" for="yoj">Year of Joining: </label>2014
+						<label class="active" for="yoj">Year of Joining: </label>{{ student.fields.year }}
 					</div>
 				</div>
 				<div class="row">
 					<div class="col m6">
-						<label class="active" for="branch">Branch: </label>Electronics And Communication
+						<label class="active" for="branch">Branch: </label>{{ student.fields.branch }}
 					</div>
 					<div class="col m6">
-						<label class="active" for="stud_id">Student Id: </label>4NM4567EC5678
+						<label class="active" for="stud_id">Student Id: </label>{{ student.fields.user.username }}
 					</div>
 				</div>
 			</div>
 		</div>
 		
-		
+		{% verbatim %}
 		<div class="row hide-on-med-and-up">
 			<div class="col s12 center-align">
 				<img class="circle responsive-img" src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/8/005/063/234/3846abf.jpg" style="border:1px black solid" width="200px" >
@@ -103,27 +103,27 @@
 				<br><br>
 				<div class="row">
 					<div class="col s6 right-align"><label class="active" for="first_name">First Name: </label></div>
-					<div class="col s6">Sadanand</div>
+					<div class="col s6">{{ student.fields.user.username }}</div>
 				</div>
 				<div class="row">
 					<div class="col s6 right-align"><label class="active" for="last_name">Last Name: </label></div>
-					<div class="col s6">Pai</div>
+					<div class="col s6">{{ student.fields.first_name }}</div>
 				</div>
 				<div class="row">
 					<div class="col s6 right-align"><label class="active" for="dob">Date of birth: </label></div>
-					<div class="col s6">25 May 1991</div>
+					<div class="col s6">DD/MM/YYYY</div>
 				</div>
 				<div class="row">
 					<div class="col s6 right-align"><label class="active" for="yoj">Year of Joining: </label></div>
-					<div class="col s6">2014</div>
+					<div class="col s6">{{ student.fields.last_name }}</div>
 				</div>
 				<div class="row">
 					<div class="col s6 right-align"><label class="active" for="branch">Branch: </label></div>
-					<div class="col s6">Electronics And Communication</div>
+					<div class="col s6">{{ student.fields.branch }}</div>
 				</div>
 				<div class="row">
 					<div class="col s6 right-align"><label class="active" for="stud_id">Student Id: </label></div>
-					<div class="col s6">4NM4567EC5678</div>
+					<div class="col s6">{{ student.fields.year }}</div>
 				</div>
 			</div>
 		</div>
@@ -134,7 +134,7 @@
 		<div class="row hide-on-small-only">
 			<div class="row">
 				<div class="col m2 right-align"><label class="active" for="email">Email Id</label></div>
-				<div class="col m2"><td class="right-align">sadypai@gmail.com</div>
+				<div class="col m2"><td class="right-align">{{ student.fields.email }}</div>
 
 				<div class="col m2 right-align"><label class="active" for="password">Password</label></div>
 				<div class="col m2"><td class="right-align">**********</div>
@@ -146,7 +146,7 @@
 		<div class="row hide-on-med-and-up">
 			<div class="row">
 				<div class="col s6 right-align"><label class="active" for="email">Email Id</label></div>
-				<div class="col s6"><td class="right-align">sadypai@gmail.com</div>
+				<div class="col s6"><td class="right-align">{{ student.fields.email }}</div>
 			</div>
 			<div class="row">
 				<div class="col s6 right-align"><label class="active" for="password">Password</label></div>
@@ -157,7 +157,8 @@
 			</div>
 		</div>
 	</div>
-
+	{% endverbatim %}
+	
   <!-- Modal Structure -->
   <div id="modal1" class="modal bottom-sheet">
   	{% csrf_token %}
@@ -197,8 +198,16 @@
 	<script type="text/javascript">
 			
 		var app = angular.module('myApp', []);
-		app.controller('myCtrl', function($scope, $http) {
-
+		app.controller('myCtrl', function($scope, $http, $location) {
+		
+			$scope.refresh = function(){
+			    $http.get("/portal/students/" + $location.absUrl().split('/')[$location.absUrl().split('/').length - 2]).then(function(response) {
+			  		$scope.student = response.data;
+					alert($scope.student);
+			    });
+			}
+			$scope.refresh();
+			
 			$scope.updatePassword = function(){
 			    if($('#password').val() != $('#confpassword').val()){
 					Materialize.toast('New Password doesnt match with confirm password', 4000);
@@ -212,7 +221,6 @@
 					},
 			  		data: {'oldpassword': $('#oldpassword').val(), 'password': $('#password').val()},
 			        url : "/portal/students/changePassword/"
-
 			    }).then(function mySuccess(response) {
 			    	Materialize.toast(response.data, 4000)
 				    
@@ -221,8 +229,6 @@
 			    });
 			}
 		});
-
-
 	</script>
 </body>
 </html>
