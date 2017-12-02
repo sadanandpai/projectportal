@@ -228,7 +228,7 @@
 			
 
 			$scope.mapProjectEdit= function(){
-				$http.get("/portal/projects/").then(function(response) {
+				$http.get("/portal/rest/projects/").then(function(response) {
 			  		$scope.projects = response.data;
 			  		setTimeout(function() { 
 			  			$('select').material_select('destroy');
@@ -251,7 +251,7 @@
 							'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
 						},
 				  		data: {'project_id': "0"},
-				        url : "/portal/studentProjectMap/" + $scope.student.fields.user.username + "/"
+				        url : "/portal/rest/studentProjectMap/" + $scope.student.fields.user.username + "/"
 				    }).then(function mySuccess(response) {
 				    	Materialize.toast(response.data, 4000);
 				    	$scope.mapVar =  false;
@@ -276,7 +276,7 @@
 							'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
 						},
 				  		data: {'project_id': $('#projectSelect').val()},
-				        url : "/portal/studentProjectMap/" + $scope.student.fields.user.username + "/"
+				        url : "/portal/rest/studentProjectMap/" + $scope.student.fields.user.username + "/"
 				    }).then(function mySuccess(response) {
 				    	Materialize.toast(response.data, 4000)
 				    	$scope.mapVar =  false;
@@ -291,7 +291,7 @@
 			}
 
 			$scope.refresh = function(){
-			    $http.get("/portal/students/" + $location.absUrl().split('/')[$location.absUrl().split('/').length - 2]).then(function(response) {
+			    $http.get("/portal/rest/students/" + $location.absUrl().split('/')[$location.absUrl().split('/').length - 2]).then(function(response) {
 			  		$scope.student = response.data[0];
 			    });
 			}
@@ -309,7 +309,7 @@
 						'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
 					},
 			  		data: {'oldpassword': $('#oldpassword').val(), 'password': $('#password').val()},
-			        url : "/portal/changePassword/"
+			        url : "/portal/rest/changePassword/"
 			    }).then(function mySuccess(response) {
 			    	Materialize.toast(response.data, 4000)
 				    
