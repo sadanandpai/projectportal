@@ -1,4 +1,5 @@
 from django import forms
+from .models import UserInfo
 
 class StudentForm(forms.Form):
     username = forms.CharField(max_length=10)
@@ -12,3 +13,11 @@ class StudentForm(forms.Form):
 class SigninForm(forms.Form):
     username = forms.CharField(min_length=5, max_length=20)
     password = forms.CharField(min_length=5, max_length=20)
+
+
+class ImageUploadForm(forms.ModelForm):
+    photo = forms.ImageField()
+
+    class Meta:
+        model = UserInfo
+        fields = ('photo', )

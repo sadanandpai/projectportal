@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'projectportal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        #'NAME': 'lupin',
+        #'NAME': 'masterdb',
         'NAME': 'd83v41m7uh23oe',
         #'USER': 'postgres',
         'USER': 'yvjguwadkqzbsy',
@@ -156,3 +156,6 @@ EMAIL_HOST_USER = 'projectportalteam@gmail.com' # email id
 EMAIL_HOST_PASSWORD = 'teamprojectportal' #password
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

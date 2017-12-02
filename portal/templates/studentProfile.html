@@ -38,10 +38,14 @@
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 
             <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/portal/guide/students/crud/"><i class="material-icons left">list</i>Students</a></li>
+                <li><a href="/portal/guide/projects/crud/"><i class="material-icons left">list</i>Projects</a></li>
                 <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
             </ul>
 
             <ul class="side-nav" id="mobile-demo">
+            	<li><a href="/portal/guide/students/crud/"><i class="material-icons left">list</i>Students</a></li>
+                <li><a href="/portal/guide/projects/crud/"><i class="material-icons left">list</i>Projects</a></li>
                 <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
              </ul>
         </div>
@@ -52,7 +56,16 @@
 		<br>
 		<div class="row hide-on-small-only">
 			<div class="col m3">
-				<img class="circle responsive-img" src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/8/005/063/234/3846abf.jpg" style="border:1px black solid" width="200px" />
+				<img class="circle responsive-img" src=/portal/media/{{student.fields.photo}} style="border:1px black solid" width="200px" />
+
+				<form action="/portal/upload/" method="post" enctype="multipart/form-data">
+					{% endverbatim %}
+					{% csrf_token %}
+					{% verbatim %}
+					<input type="hidden" name="username" value={{student.fields.user.username}}>
+				    <input id="photo" type="file" name="photo" id="photo" >
+				    <input type="submit" value="Submit" />
+				</form>
 			</div>
 			<div class="col m9">
 				<br><br>
@@ -85,8 +98,16 @@
 		
 		<div class="row hide-on-med-and-up">
 			<div class="col s12 center-align">
-				<img class="circle responsive-img" src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/8/005/063/234/3846abf.jpg" style="border:1px black solid" width="200px" >
+				<img class="circle responsive-img" src=/portal/media/{{student.fields.photo}} style="border:1px black solid" width="200px" />
 			</div>
+			<form action="/portal/upload/" method="post" enctype="multipart/form-data">
+					{% endverbatim %}
+					{% csrf_token %}
+					{% verbatim %}
+					<input type="hidden" name="username" value={{student.fields.user.username}}>
+				    <input id="photo" type="file" name="photo" id="photo" >
+				    <input type="submit" value="Submit" />
+				</form>
 			<div class="col s12">
 				<br><br>
 				<div class="row">
@@ -178,6 +199,7 @@
 		</div>
 	   </div>  
     </div>
+        
   </div>
 
 

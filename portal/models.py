@@ -13,9 +13,12 @@ User.add_to_class("natural_key", natural_key)
 
 
 class Project(models.Model):
+    project_id = models.CharField(max_length=10)
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
-    user = models.ManyToManyField(User);
+    branch = models.CharField(max_length=3)
+    year = models.CharField(max_length=4)
+    user = models.ManyToManyField(User)
 
     def __str__(self):
         return self.name
@@ -25,8 +28,9 @@ class Project(models.Model):
 class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     usertype = models.CharField(max_length=1)
-    branch = models.CharField(max_length=20)
-    year = models.CharField(max_length=20)
+    branch = models.CharField(max_length=3)
+    year = models.CharField(max_length=4)
+    photo = models.ImageField(null=True, default="")
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
