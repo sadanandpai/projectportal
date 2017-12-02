@@ -41,12 +41,16 @@
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="/portal/guide/students/crud/"><i class="material-icons left">list</i>Students</a></li>
-                <li><a href="/portal/guide/projects/crud/"><i class="material-icons left">list</i>Projects</a></li>
+            	<li><a href="/portal/guides/"><i class="material-icons left">list</i>Guides</a></li>
+                <li><a href="/portal/students/"><i class="material-icons left">list</i>Students</a></li>
+                <li class="active"><a href="/portal/projects/"><i class="material-icons left">list</i>Projects</a></li>
                 <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
             </ul>
 
             <ul class="side-nav" id="mobile-demo">
+            	<li><a href="/portal/guides/"><i class="material-icons left">list</i>Guides</a></li>
+                <li><a href="/portal/students/"><i class="material-icons left">list</i>Students</a></li>
+                <li class="active"><a href="/portal/projects/"><i class="material-icons left">list</i>Projects</a></li>
                 <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
              </ul>
         </div>
@@ -79,7 +83,7 @@
 				{% csrf_token %}
 				{% verbatim %}
 				<tr ng-repeat="project in projects | orderBy:sort:reverse | filter: tableValue">
-					<td><a href="/portal/guide/projects/{{project.fields.project_id}}/">{{project.fields.project_id}}</a></td>
+					<td><a href="/portal/projects/{{project.fields.project_id}}/">{{project.fields.project_id}}</a></td>
 
 					<td ng-if="edited == project.fields.project_id"><div class="input-field"><input id="name" type="text" value={{project.fields.name}} /></div></td>
 					<td ng-if="edited == project.fields.project_id"><div class="input-field"><input id="description" type="text" value={{project.fields.description}} /></div></div></td>
@@ -155,10 +159,10 @@
 			$scope.delete= function(project_id){
 				var message= confirm('Are you sure you want to delete this record from the database?');
 			    if (message) {
-					$http.get("/portal/guide/projects/delete/"+project_id+"/").then(function(response) {
+					$http.get("/portal/rest/projects/delete/"+project_id+"/").then(function(response) {
 			        	$scope.deleteinfo = response.data;
 				        if($scope.deleteinfo=="OK"){
-						Materialize.toast('Deleted the project with ID: '+ project_id, 4000);
+							Materialize.toast('Deleted the project with ID: '+ project_id, 4000);
 							$scope.refresh();
 				        }
 			    	});
@@ -182,8 +186,7 @@
 					  				'branch': $('#branch_add').val(), 
 					  				'year': $('#year_add').val()
 					  			},
-					        url : "/portal/guide/projects/add/"
-
+					        url : "/portal/rest/projects/add/"
 					    }).then(function mySuccess(response) {
 						    if(response.data == "Ok"){
 						    	Materialize.toast('Project details for id ' + $('#project_id_add').val() +  ' added', 4000);
@@ -194,6 +197,9 @@
 								$('#branch_add').val("");
 								$('#year_add').val("");
 								$('#modal1').modal('close');
+						    }
+						    else{
+						    	document.write(response.data);
 						    }
 					    }, function myError(response) {
 					        alert(response.statusText);
@@ -224,7 +230,7 @@
 				  				'branch': $('#branch').val(), 
 				  				'year': $('#year').val()
 				  			},
-				        url : "/portal/guide/projects/update/"
+				        url : "/portal/rest/projects/update/"
 
 				    }).then(function mySuccess(response) {
 					    if(response.data == "Ok"){
@@ -241,7 +247,7 @@
 
 
             $scope.refresh= function(){
-			    $http.get("/portal/guide/projects/").then(function(response) {
+			    $http.get("/portal/rest/projects/").then(function(response) {
 			  		$scope.projects = response.data;
 			    });
 			}

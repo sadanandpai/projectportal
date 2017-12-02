@@ -23,6 +23,10 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
+    def natural_key(self):
+        return ({ 'project_id': self.project_id, 'name': self.name })
+
+
 
 
 class UserInfo(models.Model):

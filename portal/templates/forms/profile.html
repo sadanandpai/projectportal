@@ -8,17 +8,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-		 <script type="text/javascript">
-            $(document).ready(function(){
-                $(".button-collapse").sideNav({
-                    menuWidth: 250, // Default is 300
-                    edge: 'left', // Choose the horizontal origin
-                    closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
-                    draggable: false // Choose whether you can drag to open on touch screens
-                });
-                $('.modal').modal();
-                });
-        </script>
         <style>
           .container {
             margin: 0 auto;
@@ -38,12 +27,14 @@
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 
             <ul id="nav-mobile" class="right hide-on-med-and-down">
+            	<li><a href="/portal//"><i class="material-icons left">list</i>Guides</a></li>
                 <li><a href="/portal/guide/students/crud/"><i class="material-icons left">list</i>Students</a></li>
                 <li><a href="/portal/guide/projects/crud/"><i class="material-icons left">list</i>Projects</a></li>
                 <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
             </ul>
 
             <ul class="side-nav" id="mobile-demo">
+            	<li><a href="/portal/guide/guides/crud/"><i class="material-icons left">list</i>Guides</a></li>
             	<li><a href="/portal/guide/students/crud/"><i class="material-icons left">list</i>Students</a></li>
                 <li><a href="/portal/guide/projects/crud/"><i class="material-icons left">list</i>Projects</a></li>
                 <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
@@ -165,11 +156,38 @@
 				<a data-target="modal1" class="waves-effect waves-light btn orange modal-trigger">Change Password</a>
 			</div>
 		</div>
+
+		<div class="row">
+			<div class="col m12">
+				<div class="row">
+					<div class="col m1"><label class="active" for="email">Project Name</label></div>
+					<div class="col m8" ng-hide="mapVar">
+						<span ng-if="student.fields.project != null"><strong>{{ student.fields.project.name }} : {{ student.fields.project.project_id }}</strong></span>
+						<span ng-if="student.fields.project == null"><strong>Student is not mapped against a project</strong></span>
+					</div>
+					<div class="col m6" ng-show="mapVar">
+						<select id="projectSelect">
+				    		<option ng-repeat="project in projects" value={{project.fields.project_id}}>{{project.fields.name}} : {{ project.fields.project_id }}</option>
+				    	</select>
+					</div>
+					<div class="col m2" ng-hide="mapVar">
+						<button class="waves-effect waves-light btn blue align-left" ng-click="mapProjectEdit()">Modify project</button>
+					</div>
+					<div class="col m5" ng-show ="mapVar">
+						<button class="waves-effect waves-light btn red" ng-click="unmapProject()">Unmap project</button>
+						<button class="waves-effect waves-light btn green" ng-click="mapProject()">Update project</button>
+						<a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="mapVar=false">cancel</i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
 	</div>
 	{% endverbatim %}
 	
   <!-- Modal Structure -->
-  <div id="modal1" class="modal bottom-sheet">
+  	<div id="modal1" class="modal bottom-sheet">
   	{% csrf_token %}
     <div class="modal-content">
     	<h4>Change Password</h4>
@@ -199,15 +217,79 @@
 		</div>
 	   </div>  
     </div>
-        
   </div>
-
 
 	<script type="text/javascript">
 			
 		var app = angular.module('myApp', []);
 		app.controller('myCtrl', function($scope, $http, $location) {
-		
+
+			$scope.mapVar =  false;
+			
+
+			$scope.mapProjectEdit= function(){
+				$http.get("/portal/projects/").then(function(response) {
+			  		$scope.projects = response.data;
+			  		setTimeout(function() { 
+			  			$('select').material_select('destroy');
+						if($scope.student.fields.project_id != null)
+							$('#projectSelect').val($scope.student.fields.project.project_id);
+						$('select').material_select();
+						$scope.mapVar =  true;
+			  		}, 50);
+			    });
+			}
+
+
+			$scope.unmapProject= function(){
+				var confirmation = confirm('Are you sure you want to unmap the student from the assigned Project?');
+			    if (confirmation){
+					$scope.mapVar =  !$scope.mapVar;
+				    $http({
+				        method : "POST",
+				        headers: {
+							'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
+						},
+				  		data: {'project_id': "0"},
+				        url : "/portal/studentProjectMap/" + $scope.student.fields.user.username + "/"
+				    }).then(function mySuccess(response) {
+				    	Materialize.toast(response.data, 4000);
+				    	$scope.mapVar =  false;
+				    	$scope.refresh();
+				    }, function myError(response) {
+				        alert(response.statusText);
+				    });
+				}
+				else{
+					Materialize.toast("No changes were done", 2000);
+				}
+			}
+
+
+			$scope.mapProject= function(){
+				var confirmation = confirm('Are you sure you want to map the student to the this Project?');
+			    if (confirmation){
+					$scope.mapVar =  !$scope.mapVar;
+				    $http({
+				        method : "POST",
+				        headers: {
+							'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
+						},
+				  		data: {'project_id': $('#projectSelect').val()},
+				        url : "/portal/studentProjectMap/" + $scope.student.fields.user.username + "/"
+				    }).then(function mySuccess(response) {
+				    	Materialize.toast(response.data, 4000)
+				    	$scope.mapVar =  false;
+				    	$scope.refresh();
+				    }, function myError(response) {
+				        alert(response.statusText);
+				    });
+				}
+				else{
+					Materialize.toast("No changes were done", 2000);
+				}
+			}
+
 			$scope.refresh = function(){
 			    $http.get("/portal/students/" + $location.absUrl().split('/')[$location.absUrl().split('/').length - 2]).then(function(response) {
 			  		$scope.student = response.data[0];
@@ -227,7 +309,7 @@
 						'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
 					},
 			  		data: {'oldpassword': $('#oldpassword').val(), 'password': $('#password').val()},
-			        url : "/portal/students/changePassword/"
+			        url : "/portal/changePassword/"
 			    }).then(function mySuccess(response) {
 			    	Materialize.toast(response.data, 4000)
 				    
@@ -237,5 +319,19 @@
 			}
 		});
 	</script>
+
+	<script type="text/javascript">
+        $(document).ready(function(){
+            $(".button-collapse").sideNav({
+                menuWidth: 250, // Default is 300
+                edge: 'left', // Choose the horizontal origin
+                closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+                draggable: false // Choose whether you can drag to open on touch screens
+            });
+            
+            $('.modal').modal();
+			$('select').material_select();
+        });
+    </script>
 </body>
 </html>
