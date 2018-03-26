@@ -84,14 +84,14 @@ WSGI_APPLICATION = 'projectportal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'projectp',
-        'USER': 'postgres',
-        'PASSWORD': '123456',
-        'HOST': '127.0.0.1',
-    #    'NAME': 'd2c3efma90lh3s',
-    #    'USER': 'nexgcccxdhapln',
-    #    'PASSWORD': 'b474ce7419d856e170ccdd33c76e7741ec3674682b1969b1399b902156d0fa47',
-    #    'HOST': 'ec2-23-21-220-152.compute-1.amazonaws.com',
+    #    'NAME': 'projectp',
+    #    'USER': 'postgres',
+    #    'PASSWORD': '123456',
+    #    'HOST': '127.0.0.1',
+        'NAME': 'd2c3efma90lh3s',
+        'USER': 'nexgcccxdhapln',
+        'PASSWORD': 'b474ce7419d856e170ccdd33c76e7741ec3674682b1969b1399b902156d0fa47',
+        'HOST': 'ec2-23-21-220-152.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 
