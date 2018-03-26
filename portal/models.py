@@ -5,7 +5,6 @@ from django.db.models.signals import post_save
 from django.core.cache import cache
 from django.conf import settings
 
-
 def natural_key(self):
     return ({'username': self.username, 'email': self.email, 'first_name': self.first_name, 'last_name': self.last_name})
 
@@ -18,7 +17,9 @@ class Project(models.Model):
     description = models.CharField(max_length=500)
     branch = models.CharField(max_length=3)
     year = models.CharField(max_length=4)
-    user = models.ManyToManyField(User)
+    #foriegn key
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='project_guide')
+    users = models.ManyToManyField(User)
 
     def __str__(self):
         return self.name
@@ -35,7 +36,7 @@ class UserInfo(models.Model):
     branch = models.CharField(max_length=3)
     year = models.CharField(max_length=4)
     photo = models.ImageField(null=True, default="")
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
+    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.user.first_name

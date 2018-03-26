@@ -42,15 +42,11 @@
 
             <ul id="nav-mobile" class="right hide-on-med-and-down">
             	<li class="active"><a href="/portal/guides/"><i class="material-icons left">list</i>Guides</a></li>
-                <li><a href="/portal/students/"><i class="material-icons left">list</i>Students</a></li>
-                <li><a href="/portal/projects/"><i class="material-icons left">list</i>Projects</a></li>
                 <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
             </ul>
 
             <ul class="side-nav" id="mobile-demo">
             	<li class="active"><a href="/portal/guides/"><i class="material-icons left">list</i>Guides</a></li>
-                <li><a href="/portal/students/"><i class="material-icons left">list</i>Students</a></li>
-                <li><a href="/portal/projects/"><i class="material-icons left">list</i>Projects</a></li>
                 <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
              </ul>
         </div>
@@ -83,7 +79,7 @@
 				{% csrf_token %}
 				{% verbatim %}
 				<tr ng-repeat="guide in guides | orderBy:sort:reverse | filter: tableValue">
-					<td><a href="/portal/guides/{{guide.fields.user.username}}/">{{guide.fields.user.username}}</a></td>
+					<td><a href="{{guide.fields.user.username}}"><strong>{{guide.fields.user.username}}</strong></a></td>
 					<td ng-if="edited == guide.fields.user.username"><div class="input-field"><input id="first_name" type="text" value={{guide.fields.user.first_name}} /></div></td>
 					<td ng-if="edited == guide.fields.user.username"><div class="input-field"><input id="last_name" type="text" value={{guide.fields.user.last_name}} /></div></div></td>
 					<td ng-if="edited == guide.fields.user.username"><div class="input-field"><input id="branch" type="text" value={{guide.fields.branch}} /></div></td>

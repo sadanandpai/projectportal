@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <style>
+          .container {
+            margin: 0 auto;
+            max-width: 1280px;
+            width: 90%;
+          }
+          @media  only screen and (min-width: 601px){.container{width:60%}}
+          @media  only screen and (min-width: 993px){.container{width:90%}}
+        </style>
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+	
+	<nav class="light-blue lighten-1" role="navigation">
+        <div class="nav-wrapper container">
+            <a id="logo-container" href="/portal" class="brand-logo">Project Portal</a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+            	<li class="active"><a href="/portal/guides/"><i class="material-icons left">list</i>Guides</a></li>
+                <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
+            </ul>
+
+            <ul class="side-nav" id="mobile-demo">
+            	<li class="active"><a href="/portal/guides/"><i class="material-icons left">list</i>Guides</a></li>
+                <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
+             </ul>
+        </div>
+   	</nav>
+	
+	{% verbatim %}
+	<div class="container">
+		<br>
+		<div class="row hide-on-small-only">
+			<div class="col m12">
+				<br><br>
+				<div class="row">
+					<div class="col m6 s24">
+						<label class="active" for="first_name">First Name: </label>{{ guide.fields.user.first_name }}
+					</div>
+					<div class="col m6">
+						<label class="active" for="last_name">Last Name: </label>{{ guide.fields.user.last_name }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col m6">	
+						<label class="active" for="yoj">Year of Joining: </label>{{ guide.fields.year }}
+					</div>
+					<div class="col m6">
+						<label class="active" for="branch">Branch: </label>{{ guide.fields.branch }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col m6">
+						<label class="active" for="stud_id">guide Id: </label>{{ guide.fields.user.username }}
+					</div>
+					<div class="col m6">
+						<label class="active" for="email_id">Email Id: </label>{{ guide.fields.user.email }}
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row hide-on-med-and-up">
+			<div class="col s12">
+				<br><br>
+				<div class="row">
+					<div class="col s6 right-align"><label class="active" for="first_name">First Name: </label></div>
+					<div class="col s6">{{ guide.fields.user.first_name }}</div>
+				</div>
+				<div class="row">
+					<div class="col s6 right-align"><label class="active" for="last_name">Last Name: </label></div>
+					<div class="col s6">{{ guide.fields.user.last_name }}</div>
+				</div>
+				<div class="row">
+					<div class="col s6 right-align"><label class="active" for="yoj">Year of Joining: </label></div>
+					<div class="col s6">{{ guide.fields.year }}</div>
+				</div>
+				<div class="row">
+					<div class="col s6 right-align"><label class="active" for="branch">Branch: </label></div>
+					<div class="col s6">{{ guide.fields.branch }}</div>
+				</div>
+				<div class="row">
+					<div class="col s6 right-align"><label class="active" for="stud_id">Guide Id: </label></div>
+					<div class="col s6">{{ guide.fields.user.username }}</div>
+				</div>
+				<div class="row">
+					<div class="col s6 right-align"><label class="active" for="stud_id">Email Id: </label></div>
+					<div class="col s6">{{ guide.fields.user.email }}</div>
+				</div>
+			</div>
+		</div>
+
+		<h4>Projects handled by the guide</h4>
+			<table class="bordered">
+				<thead>
+					<tr>
+						<th>Project Id</th>
+						<th>Project Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="project in projects">
+						<td><a href={{"/portal/projects/"+project.fields.project_id}}>{{project.fields.project_id}}</a></td>
+						<td>{{project.fields.name}}</a></td>
+				</tbody>
+			</table>
+
+		
+	</div>
+	{% endverbatim %}
+
+	<script type="text/javascript">
+			
+		var app = angular.module('myApp', []);
+		app.controller('myCtrl', function($scope, $http, $location) {
+
+			$http.get("/portal/rest/guides/"+$location.absUrl().split('/')[$location.absUrl().split('/').length - 2]).then(function(response) {
+			  	$scope.guide = response.data[0];
+			  	console.log($scope.guide)
+			});
+
+			$http.get("/portal/rest/guides/projects/"+$location.absUrl().split('/')[$location.absUrl().split('/').length - 2]).then(function(response) {
+			  	$scope.projects = response.data;
+			  	console.log($scope.guide)
+			});
+			
+		});
+	</script>
+
+	<script type="text/javascript">
+        $(document).ready(function(){
+            $(".button-collapse").sideNav({
+                menuWidth: 250, // Default is 300
+                edge: 'left', // Choose the horizontal origin
+                closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+                draggable: false // Choose whether you can drag to open on touch screens
+            });
+            
+            $('.modal').modal();
+			$('select').material_select();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <style>
+          .container {
+            margin: 0 auto;
+            max-width: 1280px;
+            width: 90%;
+          }
+          @media  only screen and (min-width: 601px){.container{width:60%}}
+          @media  only screen and (min-width: 993px){.container{width:90%}}
+        </style>
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+	
+	<nav class="light-blue lighten-1" role="navigation">
+        <div class="nav-wrapper container">
+            <a id="logo-container" href="/portal" class="brand-logo">Project Portal</a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+            	<li><a href="/portal/profile/"><i class="material-icons left">list</i>My profile</a></li>
+                <li class="active"><a href="/portal/students/"><i class="material-icons left">list</i>Students</a></li>
+                <li><a href="/portal/projects/"><i class="material-icons left">list</i>Projects</a></li>
+                <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
+            </ul>
+
+            <ul class="side-nav" id="mobile-demo">
+            	<li><a href="/portal/profile/"><i class="material-icons left">list</i>My profile</a></li>
+                <li class="active"><a href="/portal/students/"><i class="material-icons left">list</i>Students</a></li>
+                <li><a href="/portal/projects/"><i class="material-icons left">list</i>Projects</a></li>
+                <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
+             </ul>
+        </div>
+   	</nav>
+	
+	{% verbatim %}
+	<div class="container">
+		<br>
+		<div class="row hide-on-small-only">
+			<div class="col m3">
+				<img class="circle responsive-img" src=/portal/media/{{student.fields.photo}} style="border:1px black solid" width="200px" />
+
+			</div>
+			<div class="col m9">
+				<br><br>
+				<div class="row">
+					<div class="col m6 s24">
+						<label class="active" for="first_name">First Name: </label>{{ student.fields.user.first_name }}
+					</div>
+					<div class="col m6">
+						<label class="active" for="last_name">Last Name: </label>{{ student.fields.user.last_name }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col m6">	
+						<label class="active" for="yoj">Year of Joining: </label>{{ student.fields.year }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col m6">
+						<label class="active" for="branch">Branch: </label>{{ student.fields.branch }}
+					</div>
+					<div class="col m6">
+						<label class="active" for="stud_id">Student Id: </label>{{ student.fields.user.username }}
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row hide-on-med-and-up">
+			<div class="col s12 center-align">
+				<img class="circle responsive-img" src=/portal/media/{{student.fields.photo}} style="border:1px black solid" width="200px" />
+			</div>
+			
+			<div class="col s12">
+				<br><br>
+				<div class="row">
+					<div class="col s6 right-align"><label class="active" for="first_name">First Name: </label></div>
+					<div class="col s6">{{ student.fields.user.first_name }}</div>
+				</div>
+				<div class="row">
+					<div class="col s6 right-align"><label class="active" for="last_name">Last Name: </label></div>
+					<div class="col s6">{{ student.fields.user.last_name }}</div>
+				</div>
+				<div class="row">
+					<div class="col s6 right-align"><label class="active" for="dob">Date of birth: </label></div>
+					<div class="col s6">DD/MM/YYYY</div>
+				</div>
+				<div class="row">
+					<div class="col s6 right-align"><label class="active" for="yoj">Year of Joining: </label></div>
+					<div class="col s6">{{ student.fields.year }}</div>
+				</div>
+				<div class="row">
+					<div class="col s6 right-align"><label class="active" for="branch">Branch: </label></div>
+					<div class="col s6">{{ student.fields.branch }}</div>
+				</div>
+				<div class="row">
+					<div class="col s6 right-align"><label class="active" for="stud_id">Student Id: </label></div>
+					<div class="col s6">{{ student.fields.user.username }}</div>
+				</div>
+			</div>
+		</div>
+		
+		<hr/>
+		<br>
+		
+		<div class="row">
+			<div class="col m12">
+				<div class="row">
+					<div class="col m1"><label class="active" for="email">Project Name</label></div>
+					<div class="col m8" ng-hide="mapVar">
+						<span ng-if="student.fields.project != null"><strong>{{ student.fields.project.name }} : {{ student.fields.project.project_id }}</strong></span>
+						<span ng-if="student.fields.project == null"><strong>Student is not mapped against a project</strong></span>
+					</div>
+					<div class="col m6" ng-show="mapVar">
+						<select id="projectSelect">
+				    		<option ng-repeat="project in projects" value={{project.fields.project_id}}>{{project.fields.name}} : {{ project.fields.project_id }}</option>
+				    	</select>
+					</div>
+					<div class="col m2" ng-hide="mapVar">
+						<button class="waves-effect waves-light btn blue align-left" ng-click="mapProjectEdit()">Modify project</button>
+					</div>
+					<div class="col m5" ng-show ="mapVar">
+						<button class="waves-effect waves-light btn red" ng-click="unmapProject()">Unmap project</button>
+						<button class="waves-effect waves-light btn green" ng-click="mapProject()">Update project</button>
+						<a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="mapVar=false">cancel</i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+	{% endverbatim %}
+	
+  <!-- Modal Structure -->
+  	<div id="modal1" class="modal bottom-sheet">
+  	{% csrf_token %}
+    <div class="modal-content">
+    	<h4>Change Password</h4>
+          <div class="row">
+	        <div class="col s12 m12">
+	        	Old password: 
+	          <div class="input-field inline">
+	            <input id="oldpassword" type="password" class="validate">
+	            <label for="oldpassword" data-error="wrong" data-success="right">Old Password</label>
+	          </div>
+	        </div>
+	    </div>
+	    <div class="row">
+    	  <div class="col s12 m12">
+    	  	New Password: 
+			<div class="input-field inline">
+				<input id="password" type="password" class="validate">
+				<label for="password" data-error="wrong" data-success="right">New Password</label>
+			</div>
+			<div class="input-field inline">
+				<input id="confpassword" type="password" class="validate">
+				<label for="confpassword" data-error="wrong" data-success="right">Confirm Password</label>
+			</div>
+			<div class="input-field inline">
+				<a class="waves-effect waves-light btn orange" ng-click="updatePassword()">Update Password</a>
+			</div>
+		</div>
+	   </div>  
+    </div>
+  </div>
+
+	<script type="text/javascript">
+			
+		var app = angular.module('myApp', []);
+		app.controller('myCtrl', function($scope, $http, $location) {
+
+			$scope.mapVar =  false;
+			
+
+			$scope.mapProjectEdit= function(){
+				$http.get("/portal/rest/projects/").then(function(response) {
+			  		$scope.projects = response.data;
+			  		setTimeout(function() { 
+			  			$('select').material_select('destroy');
+						if($scope.student.fields.project_id != null)
+							$('#projectSelect').val($scope.student.fields.project.project_id);
+						$('select').material_select();
+						$scope.mapVar =  true;
+			  		}, 50);
+			    });
+			}
+
+
+			$scope.unmapProject= function(){
+				var confirmation = confirm('Are you sure you want to unmap the student from the assigned Project?');
+			    if (confirmation){
+					$scope.mapVar =  !$scope.mapVar;
+				    $http({
+				        method : "POST",
+				        headers: {
+							'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
+						},
+				  		data: {'project_id': "0"},
+				        url : "/portal/rest/studentProjectMap/" + $scope.student.fields.user.username + "/"
+				    }).then(function mySuccess(response) {
+				    	Materialize.toast(response.data, 4000);
+				    	$scope.mapVar =  false;
+				    	$scope.refresh();
+				    }, function myError(response) {
+				        alert(response.statusText);
+				    });
+				}
+				else{
+					Materialize.toast("No changes were done", 2000);
+				}
+			}
+
+
+			$scope.mapProject= function(){
+				var confirmation = confirm('Are you sure you want to map the student to the this Project?');
+			    if (confirmation){
+					$scope.mapVar =  !$scope.mapVar;
+				    $http({
+				        method : "POST",
+				        headers: {
+							'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
+						},
+				  		data: {'project_id': $('#projectSelect').val()},
+				        url : "/portal/rest/studentProjectMap/" + $scope.student.fields.user.username + "/"
+				    }).then(function mySuccess(response) {
+				    	Materialize.toast(response.data, 4000)
+				    	$scope.mapVar =  false;
+				    	$scope.refresh();
+				    }, function myError(response) {
+				        alert(response.statusText);
+				    });
+				}
+				else{
+					Materialize.toast("No changes were done", 2000);
+				}
+			}
+
+			$scope.refresh = function(){
+			    $http.get("/portal/rest/students/" + $location.absUrl().split('/')[$location.absUrl().split('/').length - 2]).then(function(response) {
+			  		$scope.student = response.data[0];
+			    });
+			}
+			$scope.refresh();
+			
+			$scope.updatePassword = function(){
+			    if($('#password').val() != $('#confpassword').val()){
+					Materialize.toast('New Password doesnt match with confirm password', 4000);
+					return;
+				}
+		    
+			    $http({
+			        method : "POST",
+			        headers: {
+						'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
+					},
+			  		data: {'oldpassword': $('#oldpassword').val(), 'password': $('#password').val()},
+			        url : "/portal/rest/changePassword/"
+			    }).then(function mySuccess(response) {
+			    	Materialize.toast(response.data, 4000)
+				    
+			    }, function myError(response) {
+			        alert(response.statusText);
+			    });
+			}
+		});
+	</script>
+
+	<script type="text/javascript">
+        $(document).ready(function(){
+            $(".button-collapse").sideNav({
+                menuWidth: 250, // Default is 300
+                edge: 'left', // Choose the horizontal origin
+                closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+                draggable: false // Choose whether you can drag to open on touch screens
+            });
+            
+            $('.modal').modal();
+			$('select').material_select();
+        });
+    </script>
+</body>
+</html>

@@ -21,3 +21,8 @@ class ImageUploadForm(forms.ModelForm):
     class Meta:
         model = UserInfo
         fields = ('photo', )
+
+
+
+class ReportUploadForm(forms.Form):
+    file = forms.FileField()

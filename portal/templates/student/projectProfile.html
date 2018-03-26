@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <style>
+          .container {
+            margin: 0 auto;
+            max-width: 1280px;
+            width: 90%;
+          }
+          @media  only screen and (min-width: 601px){.container{width:60%}}
+          @media  only screen and (min-width: 993px){.container{width:90%}}
+        </style>
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+	
+	<nav class="light-blue lighten-1" role="navigation">
+        <div class="nav-wrapper container">
+            <a id="logo-container" href="/portal" class="brand-logo">Project Portal</a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li class="active"><a href="/portal/profile/"><i class="material-icons left">list</i>My profile</a></li>
+                <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
+            </ul>
+
+            <ul class="side-nav" id="mobile-demo">
+                <li class="active"><a href="/portal/profile/"><i class="material-icons left">list</i>My profile</a></li>
+                <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
+             </ul>
+        </div>
+   	</nav>
+	
+
+   	{% verbatim %}
+   	<div class="container">
+		<br>
+		<div class="row hide-on-small-only">
+			
+			<div class="col m9">
+				<br><br>
+				<div class="row">
+					<div class="col m6 s12">
+						<label class="active" for="stud_id">Project Id: </label>{{ project.fields.project_id }}
+					</div>
+					<div class="col m6 s12">
+						<label class="active" for="first_name">Project Name: </label>{{ project.fields.name }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col m12">	
+						<label class="active" for="yoj">Description: </label>{{ project.fields.description }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col m3">	
+						<label class="active" for="yoj">Year: </label>{{ project.fields.year }}
+					</div>
+					<div class="col m3">
+						<label class="active" for="branch">Branch: </label>{{ project.fields.branch }}
+					</div>
+					<div class="col m6">
+						<label class="active" for="branch">Guide: </label>{{ project.fields.user.first_name }} {{ project.fields.user.last_name }}
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div ng-if="!project.fields.users.length">
+			<h4>No students are mapped to this project</h4>
+		</div>
+		<div ng-if="project.fields.users.length">
+			<h4>Students mapped to the project</h4>
+			<table class="bordered">
+				<thead>
+					<tr>
+						<th ng-click="orderByMe('fields.year')">Id</th>
+						<th ng-click="orderByMe('fields.year')">First Name</th>
+						<th ng-click="orderByMe('fields.year')">Last Name</th>
+						<th ng-click="orderByMe('fields.year')">Email</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="student in project.fields.users">
+						<td>{{student.username}}</a></td>
+						<td>{{student.first_name}}</a></td>
+						<td>{{student.last_name}}</a></td>
+						<td>{{student.email}}</a></td>
+					{% endverbatim %}
+				</tbody>
+			</table>
+		</div>
+
+		<br>
+
+		{% verbatim %}
+
+		<ul class="collection with-header">
+			<li class="collection-header"><h4>Uploaded documents</h4></li>
+			<li ng-if="!docsCount">No file have been uploaded so far</li>
+			<li class="collection-item" ng-repeat="doc in docs">
+				<div>
+					{{doc}}
+					<a href={{"/portal/media/"+doc}} class="secondary-content"><i class="material-icons">file_download</i></a>
+				</div>
+			</li>
+		</ul>
+
+
+		<hr />
+		<form action={{"/portal/document/upload/"+project.fields.project_id+"/"}} method="post" enctype="multipart/form-data">
+			{% endverbatim %}
+			{% csrf_token %}
+			{% verbatim %}
+			<div class="file-field input-field inline row">
+				<div class="col">
+					<div class="btn">
+						<span>File</span>
+						<input type="file" name="file" id="file">
+					</div>
+					<div class="file-path-wrapper">
+			        	<input class="file-path validate" type="text">
+					</div>
+			    </div>
+			    <div col>
+			    	<input class="input-field inline waves-effect waves-light btn blue align-left" type="submit" value="Upload" />
+			    </div>
+			</div>
+		</form>
+		{% endverbatim %}
+
+	</div>
+
+	<script type="text/javascript">
+			
+		var app = angular.module('myApp', []);
+		app.controller('myCtrl', function($scope, $http, $location) {
+			$http.get("/portal/rest/projects/" + $location.absUrl().split('/')[$location.absUrl().split('/').length - 2]).then(function(response) {
+		  			$scope.project = response.data[0];
+		  			console.log($scope.project)
+		    });
+
+
+		    $http.get("/portal/rest/documents/" + $location.absUrl().split('/')[$location.absUrl().split('/').length - 2]).then(function(response) {
+		  			$scope.docs = response.data;
+		  			$scope.docsCount = $scope.docs.length;
+			});
+
+		});
+
+
+	</script>
+
+</body>
+</html>

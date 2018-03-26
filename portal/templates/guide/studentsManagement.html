@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <!--shardul's Edit-->
+
      <script type="text/javascript">
         $(document).ready(function(){
             $(".button-collapse").sideNav({
@@ -19,8 +19,7 @@
                 draggable: false // Choose whether you can drag to open on touch screens
             });
             $('.modal').modal();
-            $('select').material_select();
-        });
+            });
     </script>
     <style>
       .container {
@@ -41,15 +40,15 @@
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-            	<li class="active"><a href="/portal/guides/"><i class="material-icons left">list</i>Guides</a></li>
-                <li><a href="/portal/students/"><i class="material-icons left">list</i>Students</a></li>
+            	<li><a href="/portal/profile/"><i class="material-icons left">list</i>My profile</a></li>
+                <li class="active"><a href="/portal/students/"><i class="material-icons left">list</i>Students</a></li>
                 <li><a href="/portal/projects/"><i class="material-icons left">list</i>Projects</a></li>
                 <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
             </ul>
 
             <ul class="side-nav" id="mobile-demo">
-            	<li class="active"><a href="/portal/guides/"><i class="material-icons left">list</i>Guides</a></li>
-                <li><a href="/portal/students/"><i class="material-icons left">list</i>Students</a></li>
+            	<li><a href="/portal/profile/"><i class="material-icons left">list</i>My profile</a></li>
+                <li class="active"><a href="/portal/students/"><i class="material-icons left">list</i>Students</a></li>
                 <li><a href="/portal/projects/"><i class="material-icons left">list</i>Projects</a></li>
                 <li><a href="/portal/signout/"><i class="material-icons left">perm_identity</i>Logout</a></li>
              </ul>
@@ -71,7 +70,7 @@
 		<table class="bordered">
 			<thead>
 				<tr>
-					<th ng-click="orderByMe('fields.user.username')">Guide Id</th>
+					<th ng-click="orderByMe('fields.user.username')">Student Id</th>
 					<th ng-click="orderByMe('fields.user.first_name')">First Name</th>
 					<th ng-click="orderByMe('fields.user.last_name')">Last Name</th>
 					<th ng-click="orderByMe('fields.branch')">Branch</th>
@@ -82,23 +81,23 @@
 			<tbody>
 				{% csrf_token %}
 				{% verbatim %}
-				<tr ng-repeat="guide in guides | orderBy:sort:reverse | filter: tableValue">
-					<td><a href="/portal/guides/{{guide.fields.user.username}}/">{{guide.fields.user.username}}</a></td>
-					<td ng-if="edited == guide.fields.user.username"><div class="input-field"><input id="first_name" type="text" value={{guide.fields.user.first_name}} /></div></td>
-					<td ng-if="edited == guide.fields.user.username"><div class="input-field"><input id="last_name" type="text" value={{guide.fields.user.last_name}} /></div></div></td>
-					<td ng-if="edited == guide.fields.user.username"><div class="input-field"><input id="branch" type="text" value={{guide.fields.branch}} /></div></td>
-					<td ng-if="edited == guide.fields.user.username"><div class="input-field"><input id="year" type="text" value={{guide.fields.year}} /></div></td>	
+				<tr ng-repeat="student in students | orderBy:sort:reverse | filter: tableValue">
+					<td><a href="/portal/students/{{student.fields.user.username}}/">{{student.fields.user.username}}</a></td>
+					<td ng-if="edited == student.fields.user.username"><div class="input-field"><input id="first_name" type="text" value={{student.fields.user.first_name}} /></div></td>
+					<td ng-if="edited == student.fields.user.username"><div class="input-field"><input id="last_name" type="text" value={{student.fields.user.last_name}} /></div></div></td>
+					<td ng-if="edited == student.fields.user.username"><div class="input-field"><input id="branch" type="text" value={{student.fields.branch}} disabled/></div></td>
+					<td ng-if="edited == student.fields.user.username"><div class="input-field"><input id="year" type="text" value={{student.fields.year}} /></div></td>	
 
-					<td ng-if="edited != guide.fields.user.username">{{guide.fields.user.first_name}}</td>
-					<td ng-if="edited != guide.fields.user.username">{{guide.fields.user.last_name}}</td>
-					<td ng-if="edited != guide.fields.user.username">{{guide.fields.branch}}</td>
-					<td ng-if="edited != guide.fields.user.username">{{guide.fields.year}}</td>
+					<td ng-if="edited != student.fields.user.username">{{student.fields.user.first_name}}</td>
+					<td ng-if="edited != student.fields.user.username">{{student.fields.user.last_name}}</td>
+					<td ng-if="edited != student.fields.user.username">{{student.fields.branch}}</td>
+					<td ng-if="edited != student.fields.user.username">{{student.fields.year}}</td>
 
-					<td ng-if="edited != guide.fields.user.username"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="edit(guide.fields.user.username)">create</i></a></td>
-					<td ng-if="edited == guide.fields.user.username"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="updatevalue(guide)">update</i></a></td>
+					<td ng-if="edited != student.fields.user.username"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="edit(student.fields.user.username)">create</i></a></td>
+					<td ng-if="edited == student.fields.user.username"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="updatevalue(student)">update</i></a></td>
 					
-					<td ng-if="edited == guide.fields.user.username"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="edit(0)">cancel</i></a></td>
-					<td ng-if="edited != guide.fields.user.username"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(guide.fields.user.username)">delete</i></a></td>
+					<td ng-if="edited == student.fields.user.username"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="edit(0)">cancel</i></a></td>
+					<td ng-if="edited != student.fields.user.username"><a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons" ng-click="delete(student.fields.user.username)">delete</i></a></td>
 				</tr>
 				{% endverbatim %}
 			</tbody>
@@ -107,12 +106,12 @@
 
 		<div id="modal1" class="modal bottom-sheet">
 		    <div class="modal-content">
-		    	<h4>Add Guides</h4>
+		    	<h4>Add student</h4>
 		        <div class="row">
 	        		<div class="col s12 m12">
 	        			<div class="input-field inline">
 							<input id="username_add" type="text" name="username" required="yes" maxlength="10" title="Alphanumerics, only with 10 characters">
-							<label for="username_add">Guides ID</label>
+							<label for="username_add">Student ID</label>
 						</div>
 						<div class="input-field inline">
 							<input id="first_name_add" type="text" name="first_name" required="yes" maxlength="20" title="First Name">
@@ -127,7 +126,7 @@
 							<label for="email_add">Email</label>
 						</div>
 						<div class="input-field inline">
-							<input id="branch_add" type="text" name="branch" required="yes" maxlength="3" title="3 letter branch name">
+							<input id="branch_add" type="text" name="branch" required="yes" maxlength="3" title="3 letter branch name" value="{{ user.userinfo.branch }}" readonly ="readonly" style="color:black">
 							<label for="branch_add">Branch</label>
 						</div>
 						<div class="input-field inline">
@@ -135,7 +134,7 @@
 							<label for="year_add">Year</label>
 						</div>
 						<div class="input-field inline">
-	                		<input type="button" class="waves-effect waves-light btn blue" ng-click="addguide()" value="Add Guide">
+	                		<input type="button" class="waves-effect waves-light btn blue" ng-click="addstudent()" value="Add student">
 	                	</div>
 					</div>
 			    </div>
@@ -166,10 +165,10 @@
 				var message= confirm('Are you sure you want to delete this record from the database?');
 			    if (message) {
 					
-					$http.get("/portal/rest/guides/delete/"+username+"/").then(function(response) {
+					$http.get("/portal/rest/students/delete/"+username+"/").then(function(response) {
 			        $scope.deleteinfo = response.data;
 				        if($scope.deleteinfo=="OK"){
-							Materialize.toast('Deleted the guides with ID: '+ username, 4000);
+							Materialize.toast('Deleted the student with ID: '+ username, 4000);
 							$scope.refresh();
 				        }
 				    });
@@ -180,7 +179,8 @@
             }
 
 
-             $scope.addguide = function(){
+             $scope.addstudent = function(){
+
 			    if($('#username_add').val() != "" && $('#first_name_add').val() != "" && $('#last_name_add').val() != "" && $('#email_add').val() != "" && $('#year_add').val() != "" && $('#branch_add').val() != ""){
 
 			    		$http({
@@ -195,11 +195,11 @@
 					  				'year': $('#year_add').val(), 
 					  				'branch': $('#branch_add').val()
 					  			},
-					        url : "/portal/rest/guides/add/"
+					        url : "/portal/rest/students/add/"
 
 					    }).then(function mySuccess(response) {
 						    if(response.data == "Ok"){
-						    	Materialize.toast('Guides details for id ' + $('#username_add').val() +  ' added', 4000);
+						    	Materialize.toast('Student details for id ' + $('#username_add').val() +  ' added', 4000);
 								$scope.refresh();
 								$('#username_add').val("");
 								$('#first_name_add').val("");
@@ -220,8 +220,8 @@
 			}
 
 
-            $scope.updatevalue = function(guide){
-			    if(guide.fields.user.first_name == $('#first_name').val() && guide.fields.user.last_name == $('#last_name').val() && guide.fields.branch == $('#branch').val() && guide.fields.year == $('#year').val()){
+            $scope.updatevalue = function(student){
+			    if(student.fields.user.first_name == $('#first_name').val() && student.fields.user.last_name == $('#last_name').val() && student.fields.branch == $('#branch').val() && student.fields.year == $('#year').val()){
 						$scope.edited= 0;
 						Materialize.toast('No data is updated', 4000);
 						return;
@@ -232,22 +232,22 @@
 				        headers: {
 							'X-CSRFToken': jQuery("[name=csrfmiddlewaretoken]").val(),
 						},
-				  		data: {	'username': guide.fields.user.username, 
+				  		data: {	'username': student.fields.user.username, 
 				  				'first_name': $('#first_name').val(), 
 				  				'last_name': $('#last_name').val(), 
 				  				'branch': $('#branch').val(), 
 				  				'year': $('#year').val()
 				  			},
-				        url : "/portal/rest/guides/update/"
+				        url : "/portal/rest/students/update/"
 
 				    }).then(function mySuccess(response) {
 					    if(response.data == "Ok"){
 							$scope.edited= 0;
 							$scope.refresh();
-						    	Materialize.toast('Guides details for id ' + guide.fields.user.username +  ' updated', 4000);
+						    	Materialize.toast('Student details for id ' + student.fields.user.username +  ' updated', 4000);
 					    }
 				    }, function myError(response) {
-				        document.write(response.data);
+				        alert(response.statusText);
 						$scope.edited= 0;
 				    });
 			}
@@ -255,8 +255,8 @@
 
 
             $scope.refresh= function(){
-			    $http.get("/portal/rest/guides/").then(function(response) {
-			  		$scope.guides = response.data;
+			    $http.get("/portal/rest/students/").then(function(response) {
+			  		$scope.students = response.data;
 			    });
 			}
 			
@@ -273,5 +273,6 @@
 		});
      
 	</script>
+
 </body>
 </html>

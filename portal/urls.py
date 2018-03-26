@@ -1,27 +1,29 @@
 from django.conf.urls import url, include
 from . import views
 from django.contrib.auth import views as auth_views
-
 from django.conf import settings
 from django.conf.urls.static import static
 
 
 urlpatterns = [
     url(r'^$', views.index),
+    url(r'^search/$', views.search),
     url(r'^signin/$', views.signin),
     url(r'^signout/$', views.signout),
 
-
-
     url(r'^guides/$', views.guidesManagement),
-    url(r'^guides/(?P<project_id>[A-z0-9]+)/$', views.guideProfile),
+    url(r'^guides/(?P<guide_id>[A-z0-9]+)/$', views.guideProfile),
     url(r'^students/$', views.studentsManagement),
     url(r'^students/(?P<username>[A-z0-9]+)/$', views.studentProfile),    
     url(r'^projects/$', views.projectsManagement),
     url(r'^projects/(?P<project_id>[A-z0-9]+)/$', views.projectProfile),
 
     url(r'^profile/$', views.profile),
+    url(r'^rest/profile/$', views.profileUser),
     url(r'^upload/$', views.dp_upload),
+    url(r'^document/upload/(?P<project_id>[A-z0-9]+)/$', views.document_upload),
+    url(r'^rest/documents/(?P<project_id>[A-z0-9]+)/$', views.documents),
+    url(r'^rest/document/delete/(?P<project_id>[A-z0-9]+)/(?P<doc_name>[A-z0-9.]+)/$', views.documentDelete),
 
 
 
@@ -31,6 +33,7 @@ urlpatterns = [
     url(r'^rest/guides/update/$', views.updateGuide),
     url(r'^rest/guides/delete/(?P<username>[A-z0-9]+)/$', views.deleteGuide),
     url(r'^rest/guides/(?P<username>[A-z0-9]+)/$', views.guides),
+    url(r'^rest/guides/projects/(?P<guide_id>[A-z0-9]+)/$', views.guideProjects),
 
     url(r'^rest/students/$', views.students),
     url(r'^rest/students/add/$', views.addStudent),
@@ -43,6 +46,9 @@ urlpatterns = [
     url(r'^rest/projects/update/$', views.updateProject),
     url(r'^rest/projects/delete/(?P<project_id>[A-z0-9]+)/$', views.deleteProject),
     url(r'^rest/projects/(?P<project_id>[A-z0-9]+)/$', views.projects),
+    #guest search
+    url(r'^rest/projectSearch/$', views.projectSearch),
+
 
     url(r'^rest/changePassword/$', views.changePassword),
     url(r'^rest/studentProjectMap/(?P<username>[A-z0-9]+)/$', views.studentProjectMap),

@@ -85,7 +85,7 @@
 					<td><a href="/portal/students/{{student.fields.user.username}}/">{{student.fields.user.username}}</a></td>
 					<td ng-if="edited == student.fields.user.username"><div class="input-field"><input id="first_name" type="text" value={{student.fields.user.first_name}} /></div></td>
 					<td ng-if="edited == student.fields.user.username"><div class="input-field"><input id="last_name" type="text" value={{student.fields.user.last_name}} /></div></div></td>
-					<td ng-if="edited == student.fields.user.username"><div class="input-field"><input id="branch" type="text" value={{student.fields.branch}} /></div></td>
+					<td ng-if="edited == student.fields.user.username"><div class="input-field"><input id="branch" type="text" value={{student.fields.branch}} disabled/></div></td>
 					<td ng-if="edited == student.fields.user.username"><div class="input-field"><input id="year" type="text" value={{student.fields.year}} /></div></td>	
 
 					<td ng-if="edited != student.fields.user.username">{{student.fields.user.first_name}}</td>
@@ -126,7 +126,7 @@
 							<label for="email_add">Email</label>
 						</div>
 						<div class="input-field inline">
-							<input id="branch_add" type="text" name="branch" required="yes" maxlength="3" title="3 letter branch name">
+							<input id="branch_add" type="text" name="branch" required="yes" maxlength="3" title="3 letter branch name" value="{{ user.userinfo.branch }}" readonly ="readonly" style="color:black">
 							<label for="branch_add">Branch</label>
 						</div>
 						<div class="input-field inline">
@@ -273,5 +273,6 @@
 		});
      
 	</script>
+
 </body>
 </html>
